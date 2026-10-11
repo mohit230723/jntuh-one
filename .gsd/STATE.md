@@ -7,29 +7,22 @@ updated: 2026-10-11
 ## Current Position
 
 **Milestone:** v1.0
-**Phase:** 2 - Database Foundation & Interface Contracts
+**Phase:** 3 - Application Foundations
 **Status:** in_progress
 **Plan:** In progress
 
 ## Last Action
 
-Phase 1 completed: generated comprehensive documentation in `docs/`:
-- `existing_system_audit.md` (pain point analysis and target transformation)
-- `srs.md` (formal Software Requirements Specification)
-- `content.md` (content outline for all 10 public pages)
-- `cse_department.md` (detailed CSE department profile, labs, faculty, curriculum)
-- `design_system.md` (design foundation tokens & component patterns)
-- `mock_data.md` (60 student records, 8 faculty, 1 admin, subjects, timetable)
-- `api_contracts.md` (frozen REST API endpoints, DTOs, and schemas)
+Phase 2 completed: created relational database foundation:
+- `db/schema.sql` (12 normalized tables with foreign keys, constraints, and indexes)
+- `db/seed.sql` (complete mock data including departments, admin, 8 faculty, 60 CSE students, timetable, attendance, marks, fees, and notices)
 
 ## Next Steps
 
-1. Execute Phase 2 (Role: P2 - Backend & Database):
-   - T2.1: Design and create `db/schema.sql` with all 12 tables (Users, Roles, Departments, Faculty, Students, Courses, Enrollments, Attendance, Marks, Timetable, Fees, Notices)
-   - T2.2: Design and create `db/seed.sql` with BCrypt hashed credentials and mock dataset
-   - T2.3: Verify schema loads cleanly in MySQL
-   - T2.4: Verify seed data loads and passes foreign key constraints
-   - T2.5: Verify API contracts alignment with entities and DTOs
+1. Execute Phase 3 (Roles: P2 Backend Foundation & P3 Frontend Foundation):
+   - Subphase 3A: Backend Foundation (Spring Boot 3 + Maven Wrapper + Security + JPA Entities + Auth Controller)
+   - Subphase 3B: Frontend Foundation (React 18 + Vite + Tailwind / Vanilla CSS tokens + React Router + Layout + Axios Client)
+   - Connect root `npm run dev` to start dev server cleanly
 
 ## Active Decisions
 
@@ -44,8 +37,8 @@ Phase 1 completed: generated comprehensive documentation in `docs/`:
 
 ## Blockers
 
-- [ ] Maven not installed — blocks Phase 3 (backend work), not immediate
+- [ ] Maven wrapper (`mvnw`) to be included in `backend/` to enable builds without global Maven installation
 
 ## Session Context
 
-Phase 1 complete. Now switching role to P2 (Backend & Database) to build the MySQL relational schema (`db/schema.sql`) and mock data (`db/seed.sql`).
+Phase 2 complete. Ready for Phase 3 (Application Foundations): Backend skeleton with JPA entities and JWT auth + Frontend skeleton with Vite and root `npm run dev` orchestration.

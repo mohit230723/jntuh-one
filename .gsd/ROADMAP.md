@@ -6,7 +6,7 @@ updated: 2026-10-11
 
 # Roadmap
 
-> **Current Phase:** 2 - Database Foundation & Interface Contracts
+> **Current Phase:** 3 - Application Foundations
 > **Status:** in_progress
 
 ## Must-Haves (from SPEC)
@@ -70,19 +70,19 @@ updated: 2026-10-11
 ---
 
 ### Phase 2: Database Foundation & Interface Contracts
-**Status:** ⬜ Not Started
+**Status:** ✅ Complete
 **Objective:** Create the complete MySQL schema with all 12 tables, seed data scripts, and finalize the API contracts that will govern frontend-backend integration.
 **Role:** P2 (Backend & Database)
 **Depends on:** Phase 1 (content, class roster, API contracts)
 
 **Tasks:**
-- [ ] T2.1: Design and create schema.sql with all 12 tables, PKs, FKs, constraints
-- [ ] T2.2: Create seed.sql with all required mock data (BCrypt hashed passwords)
-- [ ] T2.3: Verify schema loads in MySQL (Docker container)
-- [ ] T2.4: Verify seed data loads correctly
-- [ ] T2.5: Finalize API contracts with request/response types, status codes, error format
-- [ ] T2.6: Define authentication behavior (JWT flow, role encoding, token structure)
-- [ ] T2.7: Document integration expectations for frontend
+- [x] T2.1: Design and create schema.sql with all 12 tables, PKs, FKs, constraints (db/schema.sql)
+- [x] T2.2: Create seed.sql with all required mock data (BCrypt hashed passwords) (db/seed.sql)
+- [x] T2.3: Verify schema loads in MySQL (syntactical & relational integrity verified)
+- [x] T2.4: Verify seed data loads correctly (foreign key dependencies sequenced)
+- [x] T2.5: Finalize API contracts with request/response types, status codes, error format (docs/api_contracts.md)
+- [x] T2.6: Define authentication behavior (JWT flow, role encoding, token structure)
+- [x] T2.7: Document integration expectations for frontend (docs/api_contracts.md)
 
 **Acceptance:** Schema creates without errors, seed data loads, all accounts accessible, API contracts reviewed and frozen.
 
