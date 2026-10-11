@@ -3,6 +3,9 @@
 > Unified university website and student portal for JNTUH UCEST.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
+[![Guide: Comprehensive](https://img.shields.io/badge/Guide-PROJECT__GUIDE.md-orange.svg)](PROJECT_GUIDE.md)
+
+> 📖 **Full Engineering & Deployment Guide:** For detailed architecture, setup, configuration, and cloud deployment instructions, see [PROJECT_GUIDE.md](PROJECT_GUIDE.md).
 
 ## Overview
 
