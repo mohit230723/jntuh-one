@@ -7,31 +7,33 @@ updated: 2026-10-12
 ## Current Position
 
 **Milestone:** v1.0
-**Phase:** 6 - Local Containerization & Integration
+**Phase:** 7 - Kubernetes Deployment
 **Status:** in_progress
 **Plan:** In progress
 
 ## Last Action
 
-Phase 5 completed:
-- **Public Pages & CSE Deep Dive (P3):**
-  - Fully implemented `CseDepartment.jsx` with 6 interactive tabs: Overview & stats, 12 faculty profiles with research areas/emails/offices, 5 research labs with equipment specs, R22 curriculum for Sem V, placement statistics (92% placed, ₹44 LPA highest, 28 tier-1 recruiters), and departmental contact.
-  - Fully implemented `About.jsx`: Historical timeline (1965–2024), leadership profile of Principal Dr. G. K. Viswanadh, statutory governance councils, and accreditation badges (NBA Tier-1, NAAC A+, NIRF).
-  - Fully implemented `Academics.jsx`: B.Tech/M.Tech/Ph.D. program matrices, R22 regulations (CIE/SEE weightage, 75% attendance rule), master 2026–2027 academic calendar, and syllabus download action.
-  - Fully implemented `Admissions.jsx`: Detailed 7-discipline sanctioned intake matrix (regular + lateral entry seats), TG-EAPCET / TG-ECET / GATE cutoffs, and prescribed fee schedule.
-  - Fully implemented `Research.jsx`: 4 Interdisciplinary Centers of Excellence, ₹14.2 Cr sponsored grants overview, active DST/MeitY/DRDO/ISRO project breakdown, patent and publication stats.
-  - Implemented responsive mobile drawer toggle (`PublicLayout.jsx`) and mobile sidebar toggle (`PortalLayout.jsx`) with touch drawer down to 375px viewport.
-  - Verified frontend build (`npm run build` compiled 1592 modules in 8.52s with zero errors).
+Phase 6 completed:
+- **Local Containerization & Integration (P1 DevOps + P2 Backend):**
+  - Enhanced `backend/Dockerfile` with multi-stage build (Maven 3.9 + Temurin 17 Alpine), non-privileged `ucest:ucest` user, JVM container flags (`-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0`), and built-in curl healthcheck hitting `/actuator/health`.
+  - Enhanced `frontend/Dockerfile` with multi-stage build (Node 20 Alpine -> Nginx Alpine), clean web root, and periodic HTTP health probe.
+  - Enhanced `frontend/nginx.conf` with gzip compression, security headers (X-Frame-Options, X-Content-Type-Options, Referrer-Policy), immutable 1-year cache headers for `/assets/`, SPA routing fallback, and reverse proxy for both `/api/` and `/actuator/`.
+  - Upgraded `docker-compose.yml` with unified `ucest-network` bridge, network aliases (`db` and `mysql`), MySQL 8 container healthcheck (`mysqladmin ping`), backend service dependency condition (`service_healthy`), and frontend port binding to `3000:80`.
+  - Configured `.env.example` with exact matching variable defaults and instructions.
+  - Verified database initialization sequence (`db/schema.sql` and `db/seed.sql` with table-drop safeguards and foreign key integrity).
+  - Enhanced root `README.md` with detailed service map, port table, container lifecycle commands (`docker:up`, `docker:down`, `docker:clean`), and exact login credentials.
 
 ## Next Steps
 
-1. Execute Phase 6 (Local Containerization & Integration):
-   - Verify `backend/Dockerfile` multi-stage build.
-   - Verify `frontend/Dockerfile` + `frontend/nginx.conf` (SPA routing + reverse proxy `/api` to backend `http://backend:8080`).
-   - Verify root `docker-compose.yml` (MySQL 8 with healthcheck + backend with `depends_on: db: service_healthy` + frontend on port 3000).
-   - Configure `.env.example` with database passwords and JWT secrets.
-   - Verify database initialization on startup (mounting `db/schema.sql` and `db/seed.sql` into `/docker-entrypoint-initdb.d/`).
-   - Document local deployment instructions in root `README.md`.
+1. Execute Phase 7 (Kubernetes Deployment - Role: P1 DevOps):
+   - T7.1: Enable & verify Kubernetes environment (Docker Desktop / kubectl).
+   - T7.2: Create namespace manifest (`k8s/namespace.yaml` for `ucest-one`).
+   - T7.3: Create ConfigMaps & Secrets (`k8s/configmap.yaml`, `k8s/secret.example.yaml`).
+   - T7.4: Create MySQL deployment with PersistentVolumeClaim and init scripts (`k8s/mysql-pv.yaml`, `k8s/mysql-deployment.yaml`).
+   - T7.5: Create backend deployment with 2 replicas, resource limits, and readiness/liveness probes (`k8s/backend-deployment.yaml`).
+   - T7.6: Create frontend deployment (`k8s/frontend-deployment.yaml`).
+   - T7.7: Create Services (`k8s/services.yaml` with frontend NodePort:30080, backend NodePort:30081, MySQL ClusterIP:3306).
+   - T7.8: Verify manifests and document pod self-healing verification steps.
 
 ## Active Decisions
 

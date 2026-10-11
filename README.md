@@ -15,98 +15,129 @@ UCEST One replaces the existing JNTUH UCEST public website and separate student 
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Frontend | React 18, Vite, Tailwind CSS, React Router, Axios |
-| Backend | Spring Boot 3, Java 17, Maven, Spring Security, JWT |
-| Database | MySQL 8 |
-| DevOps | Docker, Kubernetes, Jenkins, Selenium, Nagios |
+| Layer | Technology | Description |
+|-------|------------|-------------|
+| Frontend | React 18, Vite 5, React Router 6, Axios, Lucide Icons | Orderful Industrial Command Deck (Vanilla CSS tokens, 8px universal radius, surgical vermillion action signals) |
+| Backend | Spring Boot 3.2.5, Java 17, Spring Security 6, Spring Data JPA | Stateless JWT authentication, Actuator health metrics, MySQL 8 driver |
+| Database | MySQL 8.0 Relational Engine | 12 normalized tables, BCrypt credential seeds, referential integrity |
+| Containerization | Docker & Docker Compose | Multi-stage builds, Alpine runtimes, Nginx reverse proxy, health checks |
+| Orchestration | Kubernetes (Docker Desktop) | Multi-replica backend, PersistentVolume, NodePort services, self-healing |
+| CI/CD & QA | Jenkins, Selenium WebDriver, Nagios | Automated build pipeline, E2E functional test suite, active monitoring |
 
 ## Project Structure
 
 ```
 ucest-one/
-├── frontend/          # React + Vite application
-├── backend/           # Spring Boot API server
-├── db/                # SQL schema and seed scripts
-│   ├── schema.sql
-│   └── seed.sql
-├── k8s/               # Kubernetes manifests
-├── monitoring/        # Nagios configuration
-├── e2e-tests/         # Selenium end-to-end tests
-├── docs/              # Documentation and screenshots
-├── .gsd/              # GSD project management
-├── docker-compose.yml
-├── Jenkinsfile
-├── package.json       # Root orchestrator
-└── .env.example
+├── frontend/          # React + Vite application (Orderful design system)
+│   ├── Dockerfile     # Multi-stage Node 20 build + Alpine Nginx runtime
+│   └── nginx.conf     # SPA routing fallback + /api reverse proxy
+├── backend/           # Spring Boot 3 REST API server
+│   ├── Dockerfile     # Multi-stage Maven build + Eclipse Temurin 17 JRE
+│   └── src/           # Controllers, Entities, Repositories, Security
+├── db/                # MySQL database definitions
+│   ├── schema.sql     # 12 normalized DDL tables with FK constraints
+│   └── seed.sql       # Initial mock data with BCrypt credentials
+├── k8s/               # Kubernetes deployment manifests
+├── monitoring/        # Nagios service monitoring configuration
+├── e2e-tests/         # Selenium end-to-end test suite
+├── docs/              # Specifications, SRS, design system, API contracts
+├── .gsd/              # Get Shit Done (GSD) roadmap and tracking state
+├── docker-compose.yml # Full-stack container orchestration
+├── Jenkinsfile        # CI/CD automation pipeline
+├── package.json       # Root project orchestrator
+└── .env.example       # Environment variables template
 ```
 
 ## Quick Start
 
 ### Prerequisites
 
-- Node.js 18+
-- Java 17+ (25 LTS recommended)
-- Maven
-- Docker & Docker Compose
+- Node.js 18+ (Node 22 recommended)
+- Java 17+ (Java 25 runtime supported, targets Java 17 bytecode)
+- Docker Desktop 29+ & Docker Compose v5+
 - Git
 
-### Development
+---
+
+### Method A: Local Development (Hot Module Reloading)
+
+Ideal for rapid frontend and portal development:
 
 ```bash
 # Clone the repository
 git clone https://github.com/mohit230723/jntuh-one.git
 cd jntuh-one
 
-# Install root dependencies
+# Install root orchestrator and frontend dependencies
 npm install
 
-# Start frontend development server
+# Start the frontend dev server (Vite HMR)
 npm run dev
-
-# Start full-stack (frontend + backend)
-npm run dev:full
 ```
 
-### Docker Compose (Full Stack)
+The application will be live immediately at:
+👉 **`http://localhost:5173/`**
+
+---
+
+### Method B: Docker Compose (Full Stack Isolated Deployment)
+
+Runs MySQL 8, Spring Boot 3 backend, and Nginx frontend in coordinated containers:
 
 ```bash
-# Copy environment template
+# 1. Copy the environment variables template
 cp .env.example .env
-# Edit .env with your values
 
-# Start all services
+# 2. Build and launch all 3 container services
 npm run docker:up
-
-# Access the application
-# Frontend: http://localhost:3000
-# Backend API: http://localhost:8080
+# Or directly: docker compose up --build
 ```
 
-### Kubernetes
+#### Service Map & Ports:
+
+| Service | Container Name | URL / Port | Purpose |
+|---------|----------------|------------|---------|
+| **Frontend** | `ucest-frontend` | `http://localhost:3000/` | Nginx serving React SPA + proxying `/api` |
+| **Backend API** | `ucest-backend` | `http://localhost:8080/` | Spring Boot REST endpoints & Actuator |
+| **Health Metric** | `ucest-backend` | `http://localhost:8080/actuator/health` | Service health status |
+| **Database** | `ucest-mysql` | `localhost:3306` | MySQL 8 with initialized schema & seed |
+
+#### Container Operations:
 
 ```bash
-# Frontend: http://localhost:30080
-# Backend: http://localhost:30081
+# View running container status
+docker compose ps
+
+# View real-time container logs
+docker compose logs -f
+
+# Stop all containers
+npm run docker:down
+
+# Stop containers and wipe volumes/data
+npm run docker:clean
 ```
 
-See [docs/](docs/) for detailed setup instructions.
+---
 
 ## Demo Accounts
 
-| Role | Username | Password |
-|------|----------|----------|
-| Admin | admin | admin123 |
-| Student | (from seed data) | student123 |
-| Faculty | (from seed data) | faculty123 |
+Pre-seeded credentials with BCrypt hashes ready for login:
 
-> ⚠️ These are mock credentials for demonstration only.
+| Role | Username | Password | Access Scope |
+|------|----------|----------|--------------|
+| **Admin** | `admin` | `admin123` | Institutional overview, Notice publishing & archiving, User provisioning |
+| **Student** | `22011A0501` | `student123` | Personal dashboard, Attendance ledger, Grade cards, Timetable, Fee mock payments |
+| **Faculty** | `fac_cs101` | `faculty123` | Assigned classes, Student rosters, Interactive attendance register, Marks entry |
 
-## Team
+> 💡 *Quick-Fill presets are also provided directly on the `/login` screen for one-click access.*
 
-Built as a software engineering project with the GSD (Get Shit Done) framework.
+---
+
+## Team & Governance
+
+Built as an engineering platform following the **Get Shit Done (GSD)** methodology.
 
 ## License
 
-MIT
+MIT License. Designed and maintained for JNTUH UCEST.

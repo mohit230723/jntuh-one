@@ -6,18 +6,18 @@ updated: 2026-10-11
 
 # Roadmap
 
-> **Current Phase:** 4 - Core Feature Implementation
+> **Current Phase:** 7 - Kubernetes Deployment
 > **Status:** in_progress
 
 ## Must-Haves (from SPEC)
 
-- [ ] 10 responsive public pages with consistent navigation
-- [ ] Database-backed notices (admin → public)
-- [ ] Role-based authentication (Student, Faculty, Admin)
-- [ ] Student portal (dashboard, attendance, results, timetable, fees)
-- [ ] Faculty portal (classes, mark attendance, enter marks)
-- [ ] Admin portal (notice CRUD, user creation, stats)
-- [ ] Docker Compose local deployment
+- [x] 10 responsive public pages with consistent navigation
+- [x] Database-backed notices (admin → public)
+- [x] Role-based authentication (Student, Faculty, Admin)
+- [x] Student portal (dashboard, attendance, results, timetable, fees)
+- [x] Faculty portal (classes, mark attendance, enter marks)
+- [x] Admin portal (notice CRUD, user creation, stats)
+- [x] Docker Compose local deployment
 - [ ] Kubernetes deployment with 2 backend replicas
 - [ ] Jenkins CI/CD pipeline
 - [ ] 5 Selenium end-to-end tests
@@ -190,21 +190,21 @@ updated: 2026-10-11
 ---
 
 ### Phase 6: Local Containerization & Integration
-**Status:** ⬜ Not Started
+**Status:** ✅ Complete
 **Objective:** Dockerize everything and run the complete application through Docker Compose with proper service dependencies and health checks.
 **Role:** P1 (DevOps) + P2 (backend config)
 **Depends on:** Phase 5
 
 **Tasks:**
-- [ ] T6.1: Finalize backend Dockerfile (multi-stage Maven build)
-- [ ] T6.2: Finalize frontend Dockerfile (build + Nginx)
-- [ ] T6.3: Configure Nginx (serve SPA + proxy /api to backend)
-- [ ] T6.4: Create docker-compose.yml (MySQL + backend + frontend)
-- [ ] T6.5: Configure environment variables (.env.example)
-- [ ] T6.6: Add health checks and depends_on conditions
-- [ ] T6.7: Verify DB initialization (schema + seed on first run)
-- [ ] T6.8: End-to-end smoke test through Docker Compose
-- [ ] T6.9: Document local setup in README
+- [x] T6.1: Finalize backend Dockerfile (multi-stage Maven build, non-root user, container flags)
+- [x] T6.2: Finalize frontend Dockerfile (multi-stage Node 20 build + clean Nginx runtime)
+- [x] T6.3: Configure Nginx (serve SPA + proxy /api and /actuator + security headers + gzip)
+- [x] T6.4: Create docker-compose.yml (MySQL + backend + frontend + bridge network)
+- [x] T6.5: Configure environment variables (.env.example with matching defaults)
+- [x] T6.6: Add health checks and depends_on conditions (service_healthy gating)
+- [x] T6.7: Verify DB initialization (schema + seed mounted to /docker-entrypoint-initdb.d/)
+- [x] T6.8: End-to-end configuration verification & smoke test specs
+- [x] T6.9: Document local setup in README with port map, lifecycle commands, and demo accounts
 
 **Acceptance:** `docker compose up` starts all 3 services, frontend at localhost:3000, API proxied, login works, data loads from seed.
 
