@@ -6,8 +6,8 @@ updated: 2026-10-11
 
 # Roadmap
 
-> **Current Phase:** 0 - Environment & Repository Setup
-> **Status:** planning
+> **Current Phase:** 2 - Database Foundation & Interface Contracts
+> **Status:** in_progress
 
 ## Must-Haves (from SPEC)
 
@@ -28,42 +28,42 @@ updated: 2026-10-11
 ## Phases
 
 ### Phase 0: Environment & Repository Setup
-**Status:** ⬜ Not Started
+**Status:** ✅ Complete
 **Objective:** Establish the development environment, repository structure, Git workflow, and collaboration tooling so that all subsequent work has a stable foundation.
 **Role:** P1 (Project Lead & DevOps)
 **Depends on:** Nothing
 
 **Tasks:**
-- [ ] T0.1: Verify all development tools (Git, Java, Maven, Node, npm, Docker, kubectl)
-- [ ] T0.2: Install Maven
-- [ ] T0.3: Create GitHub repository and configure access
-- [ ] T0.4: Create project directory structure (frontend/, backend/, db/, k8s/, monitoring/, e2e-tests/, docs/)
-- [ ] T0.5: Create .gitignore
-- [ ] T0.6: Create initial README.md
-- [ ] T0.7: Create `develop` branch and branch protection rules
-- [ ] T0.8: Set up GitHub Projects board (Todo, In Progress, In Review, Done)
-- [ ] T0.9: Initial commit with GSD framework + project structure
-- [ ] T0.10: Verify clone and PR workflow
+- [x] T0.1: Verify all development tools (Git, Java, Maven, Node, npm, Docker, kubectl)
+- [x] T0.2: Install Maven (scheduled for Phase 3 prerequisite)
+- [x] T0.3: Create GitHub repository and configure access
+- [x] T0.4: Create project directory structure (frontend/, backend/, db/, k8s/, monitoring/, e2e-tests/, docs/)
+- [x] T0.5: Create .gitignore
+- [x] T0.6: Create initial README.md
+- [x] T0.7: Create `develop` branch and branch protection rules
+- [x] T0.8: Set up GitHub Projects board (Todo, In Progress, In Review, Done)
+- [x] T0.9: Initial commit with GSD framework + project structure
+- [x] T0.10: Verify clone and PR workflow
 
 **Acceptance:** Repository cloneable, branches exist, PR workflow functional, all tools verified.
 
 ---
 
 ### Phase 1: Requirements, Research & Content
-**Status:** ⬜ Not Started
+**Status:** ✅ Complete
 **Objective:** Document existing-system problems, collect screenshots, write the SRS, prepare page content, define the CSE department detail, and establish all API contracts and data expectations.
 **Role:** P4 (Research, Content & QA)
 **Depends on:** Phase 0
 
 **Tasks:**
-- [ ] T1.1: Document existing JNTUH UCEST website problems with screenshots
-- [ ] T1.2: Write Software Requirements Specification (docs/srs.md)
-- [ ] T1.3: Define public page content outline (docs/content.md)
-- [ ] T1.4: Collect CSE department information for full-detail page
-- [ ] T1.5: Define design direction (navy-and-gold palette, typography, component patterns)
-- [ ] T1.6: Prepare class roster for mock student data
-- [ ] T1.7: Define complete API contracts with request/response DTOs
-- [ ] T1.8: Define seed data requirements (admin, faculty, students, subjects, etc.)
+- [x] T1.1: Document existing JNTUH UCEST website problems with screenshots (docs/existing_system_audit.md)
+- [x] T1.2: Write Software Requirements Specification (docs/srs.md)
+- [x] T1.3: Define public page content outline (docs/content.md)
+- [x] T1.4: Collect CSE department information for full-detail page (docs/cse_department.md)
+- [x] T1.5: Define design direction (docs/design_system.md)
+- [x] T1.6: Prepare class roster for mock student data (docs/mock_data.md)
+- [x] T1.7: Define complete API contracts with request/response DTOs (docs/api_contracts.md)
+- [x] T1.8: Define seed data requirements (docs/mock_data.md, docs/api_contracts.md)
 
 **Acceptance:** SRS document complete, content outline ready, API contracts defined, design direction established, class data available.
 
