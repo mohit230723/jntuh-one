@@ -295,4 +295,30 @@ Build and integrate full-stack application foundations: Spring Boot 3 backend sk
 
 ---
 
+## Session 9: 2026-10-12 — Phase 9: Jenkins CI/CD Pipeline
+**Focus:** Complete multi-stage declarative Jenkins pipeline, cross-platform execution, and setup guide  
+**Roles:** P1 (DevOps Lead)
+
+### Completed Work
+- ✅ Implemented root `Jenkinsfile`:
+  - Declarative pipeline parameterized with toggle flags (`DEPLOY_K8S`, `RUN_E2E`, `TEST_BASE_URL`)
+  - 6 Multi-stage build workflow:
+    1. SCM Checkout with commit SHA tracking
+    2. React 18 / Vite Frontend Build & static bundle compilation
+    3. Spring Boot 3 Backend compilation & JUnit test suite execution
+    4. Multi-stage Docker container image builds for backend and frontend
+    5. Kubernetes automated deployment rollout via Kustomize
+    6. Selenium E2E automated test suite execution against deployed services
+  - Cross-platform Windows/Linux execution using `isUnix()` checks (`bat` vs `sh`)
+  - Post-build JUnit surefire test reporting and artifact archiving (`*.jar`, `dist/**`)
+- ✅ Created `docs/jenkins_setup.md`:
+  - Step-by-step instructions for running on the user's pre-installed Windows laptop Jenkins instance
+  - Plugin catalog, Pipeline job creation, GitHub credentials, and troubleshooting guide
+
+### Next Actions
+- Commit Phase 9 to Git (`origin/develop`)
+- Advance to Phase 10: Nagios Monitoring (`monitoring/nagios/` configurations, health probes, failure recovery)
+
+---
+
 *Last updated: 2026-10-12*
