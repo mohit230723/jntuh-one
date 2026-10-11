@@ -7,33 +7,35 @@ updated: 2026-10-12
 ## Current Position
 
 **Milestone:** v1.0
-**Phase:** 7 - Kubernetes Deployment
+**Phase:** 8 - Selenium Functional Testing
 **Status:** in_progress
 **Plan:** In progress
 
 ## Last Action
 
-Phase 6 completed:
-- **Local Containerization & Integration (P1 DevOps + P2 Backend):**
-  - Enhanced `backend/Dockerfile` with multi-stage build (Maven 3.9 + Temurin 17 Alpine), non-privileged `ucest:ucest` user, JVM container flags (`-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0`), and built-in curl healthcheck hitting `/actuator/health`.
-  - Enhanced `frontend/Dockerfile` with multi-stage build (Node 20 Alpine -> Nginx Alpine), clean web root, and periodic HTTP health probe.
-  - Enhanced `frontend/nginx.conf` with gzip compression, security headers (X-Frame-Options, X-Content-Type-Options, Referrer-Policy), immutable 1-year cache headers for `/assets/`, SPA routing fallback, and reverse proxy for both `/api/` and `/actuator/`.
-  - Upgraded `docker-compose.yml` with unified `ucest-network` bridge, network aliases (`db` and `mysql`), MySQL 8 container healthcheck (`mysqladmin ping`), backend service dependency condition (`service_healthy`), and frontend port binding to `3000:80`.
-  - Configured `.env.example` with exact matching variable defaults and instructions.
-  - Verified database initialization sequence (`db/schema.sql` and `db/seed.sql` with table-drop safeguards and foreign key integrity).
-  - Enhanced root `README.md` with detailed service map, port table, container lifecycle commands (`docker:up`, `docker:down`, `docker:clean`), and exact login credentials.
+Phase 7 completed:
+- **Kubernetes Deployment (P1 DevOps):**
+  - Created `k8s/namespace.yaml` defining isolated `ucest-one` namespace.
+  - Created `k8s/configmap.yaml` and `k8s/secret.yaml` (with `k8s/secret.example.yaml`) for database credentials, JWT keys, and service discovery endpoints.
+  - Created `k8s/mysql-pv.yaml` defining 5Gi PersistentVolume and PersistentVolumeClaim for resilient database storage.
+  - Created `k8s/mysql-deployment.yaml` with automated schema & seed initialization volume mounts, resource boundaries, and health probes.
+  - Created `k8s/backend-deployment.yaml` with **2 replicas** for high availability, rolling update strategy, container JVM flags, and Actuator liveness/readiness probes.
+  - Created `k8s/frontend-deployment.yaml` with 2 replicas and HTTP probes.
+  - Created `k8s/services.yaml` exposing `frontend-service` on NodePort 30080, `backend-service` on NodePort 30081, and internal `mysql-service` on ClusterIP 3306.
+  - Orchestrated via `k8s/kustomization.yaml` and verified client-side validation using `kubectl kustomize k8s/` exiting cleanly with code 0.
+  - Documented deployment lifecycle and self-healing validation procedures in `k8s/README.md`.
 
 ## Next Steps
 
-1. Execute Phase 7 (Kubernetes Deployment - Role: P1 DevOps):
-   - T7.1: Enable & verify Kubernetes environment (Docker Desktop / kubectl).
-   - T7.2: Create namespace manifest (`k8s/namespace.yaml` for `ucest-one`).
-   - T7.3: Create ConfigMaps & Secrets (`k8s/configmap.yaml`, `k8s/secret.example.yaml`).
-   - T7.4: Create MySQL deployment with PersistentVolumeClaim and init scripts (`k8s/mysql-pv.yaml`, `k8s/mysql-deployment.yaml`).
-   - T7.5: Create backend deployment with 2 replicas, resource limits, and readiness/liveness probes (`k8s/backend-deployment.yaml`).
-   - T7.6: Create frontend deployment (`k8s/frontend-deployment.yaml`).
-   - T7.7: Create Services (`k8s/services.yaml` with frontend NodePort:30080, backend NodePort:30081, MySQL ClusterIP:3306).
-   - T7.8: Verify manifests and document pod self-healing verification steps.
+1. Execute Phase 8 (Selenium Functional Testing - Role: P4 QA):
+   - T8.1: Setup Java Selenium test framework in `e2e-tests/` with Maven pom.xml and TestNG/JUnit 5.
+   - T8.2: Configure headless Chrome WebDriver with dynamic base URL support (`http://localhost:5173`, `http://localhost:3000`, or `http://localhost:30080`).
+   - T8.3: Implement Test 1 — Public homepage notice ticker and navigation.
+   - T8.4: Implement Test 2 — Examinations page search and category filtering.
+   - T8.5: Implement Test 3 — Student login authentication and dashboard metrics verification.
+   - T8.6: Implement Test 4 — Faculty login and attendance register interaction.
+   - T8.7: Implement Test 5 — Admin login and notice creation lifecycle.
+   - T8.8: Configure test execution reporting and run E2E test verification.
 
 ## Active Decisions
 

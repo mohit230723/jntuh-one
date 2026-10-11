@@ -220,4 +220,48 @@ Build and integrate full-stack application foundations: Spring Boot 3 backend sk
 
 ---
 
+## Session 7: 2026-10-12 — Phase 7: Kubernetes Deployment
+**Focus:** Complete production Kubernetes manifests, multi-replica backend, PersistentVolume, NodePort services, and self-healing validation  
+**Roles:** P1 (DevOps Lead)
+
+### Completed Work
+- ✅ Created `k8s/namespace.yaml`:
+  - Dedicated `ucest-one` namespace for strict isolation and resource quota management
+- ✅ Created `k8s/configmap.yaml` & `k8s/secret.yaml`:
+  - Non-sensitive connection parameters (ClusterIP database URLs, Actuator configuration)
+  - Declarative secret bindings for MySQL passwords and JWT HMAC keys
+- ✅ Created `k8s/mysql-pv.yaml`:
+  - 5Gi PersistentVolume with manual storage class and local hostPath binding
+  - PersistentVolumeClaim `mysql-pvc` with `ReadWriteOnce` access mode
+- ✅ Created `k8s/mysql-deployment.yaml`:
+  - Single-replica MySQL 8.0 deployment with Recreate strategy
+  - Volume mount for persistent storage at `/var/lib/mysql`
+  - Automated init scripts mounted at `/docker-entrypoint-initdb.d`
+  - Container liveness and readiness probes using `mysqladmin ping`
+- ✅ Created `k8s/backend-deployment.yaml`:
+  - **2 backend replicas** with rolling update strategy (zero-downtime deployments)
+  - JVM container memory flags (`-XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0`)
+  - Liveness and readiness HTTP probes on `/actuator/health`
+  - CPU and memory request/limit guardrails
+- ✅ Created `k8s/frontend-deployment.yaml`:
+  - 2 frontend replicas running Nginx reverse proxy
+  - HTTP health probes on root `/`
+- ✅ Created `k8s/services.yaml`:
+  - `frontend-service`: NodePort `30080` (maps to internal Nginx port 80)
+  - `backend-service`: NodePort `30081` (maps to Spring Boot port 8080)
+  - `mysql-service`: ClusterIP on port 3306 for internal pod communication
+- ✅ Created `k8s/kustomization.yaml`:
+  - Unified Kustomize pipeline generating ConfigMaps from `k8s/init-scripts/`
+  - Validated client-side compilation via `kubectl kustomize k8s/` (clean exit code 0)
+- ✅ Created `k8s/README.md`:
+  - Architectural service diagram
+  - Step-by-step deployment instructions for Docker Desktop Kubernetes
+  - Empirical pod self-healing demonstration procedures
+
+### Next Actions
+- Commit Phase 7 to Git (`origin/develop`)
+- Advance to Phase 8: Selenium Functional Testing (`e2e-tests/` 5 core end-to-end tests)
+
+---
+
 *Last updated: 2026-10-12*

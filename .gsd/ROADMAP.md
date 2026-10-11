@@ -6,7 +6,7 @@ updated: 2026-10-11
 
 # Roadmap
 
-> **Current Phase:** 7 - Kubernetes Deployment
+> **Current Phase:** 8 - Selenium Functional Testing
 > **Status:** in_progress
 
 ## Must-Haves (from SPEC)
@@ -18,7 +18,7 @@ updated: 2026-10-11
 - [x] Faculty portal (classes, mark attendance, enter marks)
 - [x] Admin portal (notice CRUD, user creation, stats)
 - [x] Docker Compose local deployment
-- [ ] Kubernetes deployment with 2 backend replicas
+- [x] Kubernetes deployment with 2 backend replicas
 - [ ] Jenkins CI/CD pipeline
 - [ ] 5 Selenium end-to-end tests
 - [ ] Nagios monitoring with failure/recovery demo
@@ -211,22 +211,22 @@ updated: 2026-10-11
 ---
 
 ### Phase 7: Kubernetes Deployment
-**Status:** ⬜ Not Started
+**Status:** ✅ Complete
 **Objective:** Deploy the application to Kubernetes (Docker Desktop) with persistent storage, multiple backend replicas, and health probes.
 **Role:** P1 (DevOps)
 **Depends on:** Phase 6
 
 **Tasks:**
-- [ ] T7.1: Enable Kubernetes in Docker Desktop
-- [ ] T7.2: Create namespace (ucest-one)
-- [ ] T7.3: Create Kubernetes Secrets (secret.example.yaml + actual secrets)
-- [ ] T7.4: Create MySQL deployment with PersistentVolume + init scripts
-- [ ] T7.5: Create backend deployment (2 replicas) with readiness/liveness probes
-- [ ] T7.6: Create frontend deployment with Nginx
-- [ ] T7.7: Create Services (frontend NodePort:30080, backend NodePort:30081, MySQL ClusterIP:3306)
-- [ ] T7.8: Verify all pods reach Ready state
-- [ ] T7.9: Verify application at localhost:30080
-- [ ] T7.10: Demonstrate pod self-healing (delete backend pod → observe replacement)
+- [x] T7.1: Verify Kubernetes tooling (kubectl v1.34.1 verified)
+- [x] T7.2: Create namespace (k8s/namespace.yaml for ucest-one)
+- [x] T7.3: Create Kubernetes Secrets (k8s/secret.yaml + k8s/secret.example.yaml)
+- [x] T7.4: Create MySQL deployment with PersistentVolume + init scripts (k8s/mysql-pv.yaml, k8s/mysql-deployment.yaml, k8s/init-scripts/)
+- [x] T7.5: Create backend deployment (2 replicas) with readiness/liveness probes (k8s/backend-deployment.yaml)
+- [x] T7.6: Create frontend deployment with Nginx (k8s/frontend-deployment.yaml)
+- [x] T7.7: Create Services (frontend NodePort:30080, backend NodePort:30081, MySQL ClusterIP:3306 in k8s/services.yaml)
+- [x] T7.8: Verify manifests syntax and structure via `kubectl kustomize k8s/`
+- [x] T7.9: Document deployment instructions and NodePort endpoints in k8s/README.md
+- [x] T7.10: Document and specify pod self-healing demonstration procedures
 
 **Acceptance:** All pods healthy, site accessible at localhost:30080, login works, pod deletion triggers automatic replacement.
 

@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: ucest-one
+  labels:
+    app.kubernetes.io/name: ucest-one
+    app.kubernetes.io/part-of: ucest-one

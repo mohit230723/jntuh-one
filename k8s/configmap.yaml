@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ucest-config
+  namespace: ucest-one
+  labels:
+    app.kubernetes.io/name: ucest-one
+    app.kubernetes.io/component: config
+data:
+  MYSQL_DATABASE: "ucest_one"
+  MYSQL_USER: "ucest_user"
+  SPRING_DATASOURCE_URL: "jdbc:mysql://mysql-service:3306/ucest_one?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+  SPRING_DATASOURCE_USERNAME: "root"
+  SERVER_PORT: "8080"
+  MANAGEMENT_ENDPOINTS_WEB_EXPOSURE_INCLUDE: "health,info,metrics"
