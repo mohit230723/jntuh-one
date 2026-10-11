@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { 
@@ -12,12 +12,15 @@ import {
   LogOut, 
   Users, 
   BarChart3, 
-  ShieldCheck 
+  ShieldCheck,
+  Menu,
+  X
 } from 'lucide-react';
 
 export default function PortalLayout() {
   const { user, logout, isStudent, isFaculty, isAdmin } = useAuth();
   const navigate = useNavigate();
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
 
   const handleLogout = () => {
     logout();
@@ -33,6 +36,11 @@ export default function PortalLayout() {
         borderRight: '1px solid var(--color-frost)',
         display: 'flex',
         flexDirection: 'column',
+        position: window.innerWidth < 768 ? 'fixed' : 'relative',
+        zIndex: 100,
+        height: '100vh',
+        left: (window.innerWidth < 768 && !mobileSidebarOpen) ? '-260px' : 0,
+        transition: 'left 0.25s ease'
       }}>
         {/* Brand Header */}
         <div style={{
@@ -46,17 +54,24 @@ export default function PortalLayout() {
           <Link to="/" style={{ display: 'flex', alignItems: 'center', fontWeight: 700, fontSize: '18px', color: 'var(--color-ink-black)' }}>
             UCEST ONE<span style={{ color: 'var(--color-vermillion-signal)' }}>*</span>
           </Link>
-          <span style={{
-            fontSize: '10px',
-            fontWeight: 700,
-            textTransform: 'uppercase',
-            backgroundColor: 'var(--color-slate-900)',
-            color: '#fff',
-            padding: '2px 6px',
-            borderRadius: '4px'
-          }}>
-            {isStudent ? 'STUDENT' : isFaculty ? 'FACULTY' : 'ADMIN'}
-          </span>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+            <span style={{
+              fontSize: '10px',
+              fontWeight: 700,
+              textTransform: 'uppercase',
+              backgroundColor: 'var(--color-slate-900)',
+              color: '#fff',
+              padding: '2px 6px',
+              borderRadius: '4px'
+            }}>
+              {isStudent ? 'STUDENT' : isFaculty ? 'FACULTY' : 'ADMIN'}
+            </span>
+            {window.innerWidth < 768 && (
+              <button onClick={() => setMobileSidebarOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
+                <X size={18} />
+              </button>
+            )}
+          </div>
         </div>
 
         {/* User Card */}
@@ -67,36 +82,27 @@ export default function PortalLayout() {
         </div>
 
         {/* Navigation Deck Items */}
-        <nav style={{ flex: 1, padding: '16px 12px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+        <nav style={{ flex: 1, padding: '16px 12px', display: 'flex', flexDirection: 'column', gap: '4px', overflowY: 'auto' }}>
           {isStudent && (
             <>
-              <PortalNavItem to="/portal/student" icon={<Home size={18} />} label="Overview" />
-              <PortalNavItem to="/portal/student/attendance" icon={<CheckSquare size={18} />} label="Attendance" />
-              <PortalNavItem to="/portal/student/results" icon={<Award size={18} />} label="Semester Results" />
-              <PortalNavItem to="/portal/student/timetable" icon={<Calendar size={18} />} label="Class Timetable" />
-              <PortalNavItem to="/portal/student/fees" icon={<CreditCard size={18} />} label="Fee Records" />
+              <PortalNavItem to="/portal/student" onClick={() => setMobileSidebarOpen(false)} icon={<Home size={18} />} label="Student Dashboard" />
             </>
           )}
 
           {isFaculty && (
             <>
-              <PortalNavItem to="/portal/faculty" icon={<Home size={18} />} label="Assigned Classes" />
-              <PortalNavItem to="/portal/faculty/attendance" icon={<CheckSquare size={18} />} label="Mark Attendance" />
-              <PortalNavItem to="/portal/faculty/marks" icon={<Award size={18} />} label="Internal Marks" />
-              <PortalNavItem to="/portal/faculty/notices" icon={<Bell size={18} />} label="Post Notice" />
+              <PortalNavItem to="/portal/faculty" onClick={() => setMobileSidebarOpen(false)} icon={<Home size={18} />} label="Faculty Dashboard" />
             </>
           )}
 
           {isAdmin && (
             <>
-              <PortalNavItem to="/portal/admin" icon={<BarChart3 size={18} />} label="System Metrics" />
-              <PortalNavItem to="/portal/admin/notices" icon={<Bell size={18} />} label="Manage Notices" />
-              <PortalNavItem to="/portal/admin/users" icon={<Users size={18} />} label="Provision Users" />
+              <PortalNavItem to="/portal/admin" onClick={() => setMobileSidebarOpen(false)} icon={<BarChart3 size={18} />} label="Admin Console" />
             </>
           )}
 
           <div style={{ height: '1px', backgroundColor: 'var(--color-frost)', margin: '16px 0' }} />
-          <PortalNavItem to="/" icon={<ShieldCheck size={18} />} label="Public Website" />
+          <PortalNavItem to="/" onClick={() => setMobileSidebarOpen(false)} icon={<ShieldCheck size={18} />} label="Public Website" />
         </nav>
 
         {/* Logout Control */}
@@ -123,22 +129,31 @@ export default function PortalLayout() {
       </aside>
 
       {/* Main Command Workspace */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
         {/* Top Header Rail */}
         <header style={{
           height: '64px',
           backgroundColor: 'var(--color-paper)',
           borderBottom: '1px solid var(--color-frost)',
-          padding: '0 32px',
+          padding: '0 24px',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between'
         }}>
-          <div style={{ fontSize: '13px', color: 'var(--color-slate-600)', display: 'flex', alignItems: 'center', gap: '8px' }}>
-            <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--color-success)' }} />
-            SESSION ACTIVE — {user?.role}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            <button
+              onClick={() => setMobileSidebarOpen(!mobileSidebarOpen)}
+              className="nav-mobile-toggle"
+              aria-label="Toggle portal menu"
+            >
+              <Menu size={20} />
+            </button>
+            <div style={{ fontSize: '13px', color: 'var(--color-slate-600)', display: 'flex', alignItems: 'center', gap: '8px' }}>
+              <span style={{ width: '8px', height: '8px', borderRadius: '50%', backgroundColor: 'var(--color-success)' }} />
+              <span>SESSION ACTIVE</span>
+            </div>
           </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <span className="eyebrow-pill" style={{ color: 'var(--color-slate-900)' }}>
               ACADEMIC YEAR 2026-2027
             </span>
@@ -146,7 +161,7 @@ export default function PortalLayout() {
         </header>
 
         {/* Content Viewport */}
-        <main style={{ flex: 1, padding: '32px' }}>
+        <main style={{ flex: 1, padding: '24px' }}>
           <Outlet />
         </main>
       </div>
@@ -154,11 +169,12 @@ export default function PortalLayout() {
   );
 }
 
-function PortalNavItem({ to, icon, label }) {
+function PortalNavItem({ to, icon, label, onClick }) {
   return (
     <NavLink
       to={to}
-      end={to === '/portal/student' || to === '/portal/faculty' || to === '/portal/admin'}
+      end
+      onClick={onClick}
       style={({ isActive }) => ({
         display: 'flex',
         alignItems: 'center',

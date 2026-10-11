@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { ArrowUpRight, Terminal } from 'lucide-react';
+import { ArrowUpRight, Terminal, Menu, X } from 'lucide-react';
 
 export default function PublicLayout() {
   const { user, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const navItems = [
     { name: 'About', path: '/about' },
@@ -50,9 +51,11 @@ export default function PublicLayout() {
             textTransform: 'uppercase',
             fontWeight: '600'
           }}>CIRCULAR</span>
-          <span>B.Tech Autonomous Semester End Examination Schedule Released — R22 Regulation</span>
+          <span style={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            B.Tech Autonomous Semester End Examination Schedule Released — R22 Regulation
+          </span>
         </div>
-        <Link to="/examinations" style={{ color: 'var(--color-cloud)', display: 'flex', alignItems: 'center', gap: '4px' }}>
+        <Link to="/examinations" style={{ color: 'var(--color-cloud)', display: 'flex', alignItems: 'center', gap: '4px', whiteSpace: 'nowrap', marginLeft: '12px' }}>
           View Schedule <ArrowUpRight size={12} />
         </Link>
       </div>
@@ -83,13 +86,10 @@ export default function PublicLayout() {
             }}>
               UCEST ONE<span style={{ color: 'var(--color-vermillion-signal)', marginLeft: '1px' }}>*</span>
             </div>
-            <span className="eyebrow-pill" style={{ display: 'none', md: 'inline-flex' }}>
-              AUTONOMOUS 1965
-            </span>
           </Link>
 
-          {/* Navigation Items */}
-          <nav style={{ display: 'flex', alignItems: 'center', gap: '20px' }}>
+          {/* Desktop Navigation Items */}
+          <nav className="nav-desktop">
             {navItems.map((item) => (
               <NavLink
                 key={item.path}
@@ -111,7 +111,7 @@ export default function PublicLayout() {
           </nav>
 
           {/* Right Action Buttons */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
             {isAuthenticated ? (
               <>
                 <button
@@ -131,16 +131,55 @@ export default function PublicLayout() {
               </>
             ) : (
               <>
-                <Link to="/login" className="btn-ghost" style={{ padding: '8px 16px', fontSize: '12px' }}>
+                <Link to="/login" className="btn-ghost" style={{ padding: '8px 14px', fontSize: '12px' }}>
                   Login
                 </Link>
-                <Link to="/login" className="btn-sunset">
+                <Link to="/login" className="btn-sunset" style={{ padding: '8px 16px', fontSize: '12px' }}>
                   Portal Access →
                 </Link>
               </>
             )}
+
+            {/* Mobile Menu Hamburger Toggle Button */}
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="nav-mobile-toggle"
+              aria-label="Toggle navigation menu"
+            >
+              {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
           </div>
         </div>
+
+        {/* Mobile Dropdown Navigation Drawer */}
+        {mobileMenuOpen && (
+          <div style={{
+            backgroundColor: 'var(--color-paper)',
+            borderBottom: '1px solid var(--color-frost)',
+            padding: '16px 24px 24px 24px',
+            display: 'flex',
+            flexDirection: 'column',
+            gap: '12px'
+          }}>
+            {navItems.map((item) => (
+              <NavLink
+                key={item.path}
+                to={item.path}
+                onClick={() => setMobileMenuOpen(false)}
+                style={({ isActive }) => ({
+                  fontSize: '14px',
+                  fontWeight: 600,
+                  textTransform: 'uppercase',
+                  padding: '8px 0',
+                  color: isActive ? 'var(--color-vermillion-signal)' : 'var(--color-slate-900)',
+                  borderBottom: '1px solid var(--color-vellum)'
+                })}
+              >
+                {item.name}
+              </NavLink>
+            ))}
+          </div>
+        )}
       </header>
 
       {/* Main Page Body */}
@@ -215,7 +254,9 @@ export default function PublicLayout() {
             justifyContent: 'space-between',
             alignItems: 'center',
             fontSize: '12px',
-            color: 'var(--color-iron)'
+            color: 'var(--color-iron)',
+            flexWrap: 'wrap',
+            gap: '8px'
           }}>
             <div>© 2026 JNTUH UCEST. All rights reserved. Orderful Command Deck Architecture.</div>
             <div>Built for Engineering Excellence</div>

@@ -7,35 +7,31 @@ updated: 2026-10-12
 ## Current Position
 
 **Milestone:** v1.0
-**Phase:** 5 - Complete Public Website & Portal
+**Phase:** 6 - Local Containerization & Integration
 **Status:** in_progress
 **Plan:** In progress
 
 ## Last Action
 
-Phase 4 completed:
-- **Backend Entities & Repositories (P2):**
-  - Created all 10 JPA entities: `FacultyProfile`, `StudentProfile`, `Course`, `ClassAssignment`, `AttendanceSession`, `StudentAttendance`, `StudentMark`, `Timetable`, `FeeRecord`, `FeeTransaction`.
-  - Created all 11 Spring Data JPA repositories: `DepartmentRepository`, `StudentProfileRepository`, `FacultyProfileRepository`, `CourseRepository`, `ClassAssignmentRepository`, `AttendanceSessionRepository`, `StudentAttendanceRepository`, `StudentMarkRepository`, `TimetableRepository`, `FeeRecordRepository`, `FeeTransactionRepository`.
-  - Created 14 DTOs matching frozen API contracts (`NoticeDto`, `DepartmentDto`, `StudentDashboardDto`, `SubjectAttendanceDto`, `StudentAttendanceDto`, `SubjectGradeDto`, `StudentResultsDto`, `TimetableDto`, `FeeSummaryDto`, `FeeTransactionDto`, `FacultyClassDto`, `StudentListItemDto`, `AttendanceSubmissionRequest`, `MarksSubmissionRequest`, `AdminStatsDto`, `UserCreationRequest`).
-  - Implemented 4 REST Controllers: `PublicNoticeController` (search + category + pagination), `PublicDepartmentController`, `StudentPortalController` (dashboard, attendance, results, timetable, fees, mock pay), `FacultyPortalController` (classes, students, attendance submit, marks submit), `AdminPortalController` (stats, notice CRUD, user provisioning).
-  - Configured JUnit test suite with H2 in-memory profile (`PublicNoticeControllerTest`, `AdminPortalControllerTest`).
-- **Frontend Integration & Feature Panes (P3):**
-  - Implemented 5 service modules with live Axios client & resilient fallbacks (`noticeService`, `departmentService`, `studentService`, `facultyService`, `adminService`).
-  - Connected public pages (`Examinations` notice search/filter/modal, `Departments` roster, `CampusLife` events, `Home` notices ticker).
-  - Enhanced role portals:
-    - **Student Dashboard:** Multi-tab command desk with Overview, Master Attendance Ledger (<75% detention warnings), Results & Grade Cards by semester, Weekly Master Timetable, and Fee Account with interactive mock payment modal + instant receipt generation.
-    - **Faculty Dashboard:** Assigned cohorts, interactive student attendance register with bulk toggles and session persistence, and internal marks entry for Mid-1 / Mid-2 / Assignments.
-    - **Admin Dashboard:** Overview with live KPI stats cards and infrastructure health, Notice publishing & archive management, and User provisioning form with BCrypt password generation.
-  - Verified frontend production build (`npm run build` completed cleanly in 5.62s) and hot-reloading dev server active on `http://localhost:5173/`.
+Phase 5 completed:
+- **Public Pages & CSE Deep Dive (P3):**
+  - Fully implemented `CseDepartment.jsx` with 6 interactive tabs: Overview & stats, 12 faculty profiles with research areas/emails/offices, 5 research labs with equipment specs, R22 curriculum for Sem V, placement statistics (92% placed, ₹44 LPA highest, 28 tier-1 recruiters), and departmental contact.
+  - Fully implemented `About.jsx`: Historical timeline (1965–2024), leadership profile of Principal Dr. G. K. Viswanadh, statutory governance councils, and accreditation badges (NBA Tier-1, NAAC A+, NIRF).
+  - Fully implemented `Academics.jsx`: B.Tech/M.Tech/Ph.D. program matrices, R22 regulations (CIE/SEE weightage, 75% attendance rule), master 2026–2027 academic calendar, and syllabus download action.
+  - Fully implemented `Admissions.jsx`: Detailed 7-discipline sanctioned intake matrix (regular + lateral entry seats), TG-EAPCET / TG-ECET / GATE cutoffs, and prescribed fee schedule.
+  - Fully implemented `Research.jsx`: 4 Interdisciplinary Centers of Excellence, ₹14.2 Cr sponsored grants overview, active DST/MeitY/DRDO/ISRO project breakdown, patent and publication stats.
+  - Implemented responsive mobile drawer toggle (`PublicLayout.jsx`) and mobile sidebar toggle (`PortalLayout.jsx`) with touch drawer down to 375px viewport.
+  - Verified frontend build (`npm run build` compiled 1592 modules in 8.52s with zero errors).
 
 ## Next Steps
 
-1. Execute Phase 5 (Role: P3 Frontend & P2 Backend Adjustments):
-   - Polish all 10 public pages and navigation routes.
-   - Comprehensive login flow and authentication guard validation for Student, Faculty, and Admin.
-   - Verify mobile responsiveness, edge states (empty/loading/error), and Orderful design consistency across all folds.
-   - Prepare Docker Compose verification and Selenium test setup.
+1. Execute Phase 6 (Local Containerization & Integration):
+   - Verify `backend/Dockerfile` multi-stage build.
+   - Verify `frontend/Dockerfile` + `frontend/nginx.conf` (SPA routing + reverse proxy `/api` to backend `http://backend:8080`).
+   - Verify root `docker-compose.yml` (MySQL 8 with healthcheck + backend with `depends_on: db: service_healthy` + frontend on port 3000).
+   - Configure `.env.example` with database passwords and JWT secrets.
+   - Verify database initialization on startup (mounting `db/schema.sql` and `db/seed.sql` into `/docker-entrypoint-initdb.d/`).
+   - Document local deployment instructions in root `README.md`.
 
 ## Active Decisions
 

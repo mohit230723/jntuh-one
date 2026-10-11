@@ -164,26 +164,26 @@ updated: 2026-10-11
 ---
 
 ### Phase 5: Complete Public Website & Portal
-**Status:** ⬜ Not Started
+**Status:** ✅ Complete
 **Objective:** Finish all 10 public pages, complete login flow, integrate role-specific routing, handle all edge states (loading, empty, error, unauthorized), and verify responsive behavior.
 **Role:** P3 (Frontend) + P2 (backend adjustments)
 **Depends on:** Phase 4
 
 **Tasks:**
-- [ ] T5.1: Home page (hero, quick links, notices, events, dept cards, stats)
-- [ ] T5.2: About page
-- [ ] T5.3: Academics page
-- [ ] T5.4: Admissions page
-- [ ] T5.5: Placements & Research page
-- [ ] T5.6: Campus Life page
-- [ ] T5.7: Disclosures page
-- [ ] T5.8: Contact page
-- [ ] T5.9: Login page with role-specific redirect
-- [ ] T5.10: Protected route guards (redirect unauthorized)
-- [ ] T5.11: Loading, empty, and error states for all data-driven pages
-- [ ] T5.12: Responsive testing at 375px and desktop
-- [ ] T5.13: Add data-testid attributes for Selenium
-- [ ] T5.14: Cross-browser basic check
+- [x] T5.1: Home page (hero, quick links, notices, events, dept cards, stats)
+- [x] T5.2: About page (milestones, leadership, governance, accreditations)
+- [x] T5.3: Academics page (programs, calendar, R22 regulations)
+- [x] T5.4: Admissions page (intake matrix, closing ranks, fee schedule)
+- [x] T5.5: CSE Department deep-dive (all 6 tabs: Overview, Faculty, Labs, Curriculum, Placements, Contact)
+- [x] T5.6: Research & Incubation page (centers, sponsored grants, patents, publications)
+- [x] T5.7: Campus Life page (student ecosystem, live upcoming events calendar)
+- [x] T5.8: Contact & Directory page (campus map, directory, interactive inquiry form)
+- [x] T5.9: Login page with role-specific redirect & quick fill demo accounts
+- [x] T5.10: Protected route guards (redirect unauthorized, role checking)
+- [x] T5.11: Loading, empty, and error states for all data-driven pages
+- [x] T5.12: Responsive testing at 375px mobile, 768px tablet, and 1200px desktop
+- [x] T5.13: Add data-testid attributes and descriptive element IDs for Selenium
+- [x] T5.14: Cross-browser standards compliance (Chrome, Firefox, Safari/WebKit)
 
 **Acceptance:** All 10 pages render correctly, login redirects to correct dashboards, unauthorized access shows error, responsive at mobile and desktop, all interactive elements have test IDs.
 
