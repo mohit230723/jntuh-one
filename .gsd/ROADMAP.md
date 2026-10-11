@@ -6,7 +6,7 @@ updated: 2026-10-11
 
 # Roadmap
 
-> **Current Phase:** 10 - Nagios Monitoring
+> **Current Phase:** 11 - Final Integration & Release
 > **Status:** in_progress
 
 ## Must-Haves (from SPEC)
@@ -21,7 +21,7 @@ updated: 2026-10-11
 - [x] Kubernetes deployment with 2 backend replicas
 - [x] Jenkins CI/CD pipeline
 - [x] 5 Selenium end-to-end tests
-- [ ] Nagios monitoring with failure/recovery demo
+- [x] Nagios monitoring with failure/recovery demo
 
 ---
 
@@ -275,19 +275,20 @@ updated: 2026-10-11
 ---
 
 ### Phase 10: Nagios Monitoring
-**Status:** ⬜ Not Started
+**Status:** ✅ Complete
 **Objective:** Monitor frontend, backend health, and database connectivity. Demonstrate failure detection and recovery.
 **Role:** P4 (QA/Monitoring)
 **Depends on:** Phase 7 (K8s running)
 
 **Tasks:**
-- [ ] T10.1: Set up Nagios Core (Docker or native)
-- [ ] T10.2: Configure frontend availability check
-- [ ] T10.3: Configure backend health check (/actuator/health)
-- [ ] T10.4: Configure database health check (via backend health endpoint)
-- [ ] T10.5: Verify all checks show healthy status
-- [ ] T10.6: Demonstrate failure detection (stop a service → Nagios alerts)
-- [ ] T10.7: Restore service → verify recovery detection
+- [x] T10.1: Set up Nagios Core (Docker compose + master nagios.cfg in monitoring/nagios/)
+- [x] T10.2: Configure frontend availability check (Port 3000 / 5173 / 30080 in objects/ucest-services.cfg)
+- [x] T10.3: Configure backend health check (/actuator/health asserting status UP)
+- [x] T10.4: Configure database health check (via Actuator db component + TCP 3306 probe)
+- [x] T10.5: Verify all checks show healthy status (monitoring/nagios/health-checker.js)
+- [x] T10.6: Demonstrate failure detection (demo-failure-recovery.ps1 / .sh triggering CRITICAL state)
+- [x] T10.7: Restore service → verify recovery detection (RECOVERY state resolution)
+- [x] T10.8: Document Nagios architecture and demonstration procedures in monitoring/nagios/README.md
 
 **Acceptance:** All 3 checks pass when healthy, failure is detected within check interval, recovery is detected after restart.
 

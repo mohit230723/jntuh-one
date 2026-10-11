@@ -7,30 +7,28 @@ updated: 2026-10-12
 ## Current Position
 
 **Milestone:** v1.0
-**Phase:** 10 - Nagios Monitoring
+**Phase:** 11 - Final Integration & Release
 **Status:** in_progress
 **Plan:** In progress
 
 ## Last Action
 
-Phase 9 completed:
-- **Jenkins CI/CD Pipeline (P1 DevOps):**
-  - Created declarative cross-platform `Jenkinsfile` with parameterization (`DEPLOY_K8S`, `RUN_E2E`, `TEST_BASE_URL`).
-  - Configured 6 robust stages: SCM Checkout, React/Vite Frontend Build, Spring Boot 3 Backend Build & JUnit test execution, Docker container image build, Kubernetes automated deployment (`kubectl apply -k k8s/`), and Selenium E2E test execution.
-  - Added cross-platform `isUnix()` routing (`sh` vs `bat`) guaranteeing seamless execution on the user's Windows laptop Jenkins instance.
-  - Configured post-execution reporting for JUnit surefire test reports and artifact archiving (`*.jar` and `dist/`).
-  - Documented complete setup guide in `docs/jenkins_setup.md` covering prerequisites, required plugins, pipeline job setup, and troubleshooting.
+Phase 10 completed:
+- **Nagios Monitoring (P4 QA/Monitoring):**
+  - Created master `monitoring/nagios/nagios.cfg` and object definitions in `monitoring/nagios/objects/` (`templates.cfg`, `timeperiods.cfg`, `contacts.cfg`, `commands.cfg`, `ucest-hosts.cfg`, `ucest-services.cfg`).
+  - Defined 5 active infrastructure probes: Frontend Web UI availability (Port 3000/5173), Backend Spring Boot Actuator health (`/actuator/health` checking `"UP"`), Database component health via Actuator, direct MySQL TCP 3306 port listener, and Public Notices API latency.
+  - Created containerized Nagios deployment `monitoring/nagios/docker-compose.nagios.yml` (port 8085 web UI with `nagiosadmin` credentials).
+  - Implemented active probe runner `monitoring/nagios/health-checker.js`.
+  - Implemented empirical failure detection and recovery demonstration scripts (`demo-failure-recovery.ps1` and `demo-failure-recovery.sh`) and verified successful execution (OK -> CRITICAL -> RECOVERY).
+  - Documented complete architecture in `monitoring/nagios/README.md`.
 
 ## Next Steps
 
-1. Execute Phase 10 (Nagios Monitoring - Role: P4 QA/Monitoring):
-   - T10.1: Setup Nagios configuration structure in `monitoring/nagios/` (hosts, services, commands, contacts).
-   - T10.2: Configure host definition for `ucest-one` server (local host, Docker containers, Kubernetes NodePort).
-   - T10.3: Configure service check for Frontend HTTP availability (Port 3000 / 30080 / 5173).
-   - T10.4: Configure service check for Backend Actuator health endpoint (`/actuator/health` on Port 8080 / 30081).
-   - T10.5: Configure service check for MySQL database connectivity via Actuator db probe.
-   - T10.6: Create failure detection and recovery verification demonstration script.
-   - T10.7: Document Nagios monitoring architecture and operation in `monitoring/nagios/README.md`.
+1. Execute Phase 11 (Final Integration & Release - Role: P1 Lead + P4 QA):
+   - T11.1: Final full-stack smoke test and route validation.
+   - T11.2: Verify root `README.md` and complete documentation suite.
+   - T11.3: Tag v1.0.0 release.
+   - T11.4: Update milestone tracking and conclude GSD roadmap.
 
 ## Active Decisions
 

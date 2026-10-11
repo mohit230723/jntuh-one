@@ -321,4 +321,31 @@ Build and integrate full-stack application foundations: Spring Boot 3 backend sk
 
 ---
 
+## Session 10: 2026-10-12 — Phase 10: Nagios Monitoring
+**Focus:** Complete Nagios Core infrastructure configuration, 5 service probes, Docker Compose monitor, and empirical failure/recovery demo  
+**Roles:** P4 (QA/Monitoring Lead)
+
+### Completed Work
+- ✅ Configured master Nagios Core daemon in `monitoring/nagios/nagios.cfg`
+- ✅ Implemented modular Nagios object definitions in `monitoring/nagios/objects/`:
+  - `templates.cfg`: Inheritance rules for hosts and services
+  - `timeperiods.cfg`: 24x7 monitoring schedule
+  - `contacts.cfg`: Administrative alert group definitions (`sysadmin@ucest.ac.in`)
+  - `commands.cfg`: Service check definitions (`check_http`, `check_tcp_port`, alert email formatters)
+  - `ucest-hosts.cfg`: Host nodes for Frontend, Backend, and Database
+  - `ucest-services.cfg`: 5 Active service probes (Frontend HTTP 200, Backend Actuator `/actuator/health`, Database component health, MySQL TCP 3306 socket, Public Notices API latency)
+- ✅ Implemented containerized Nagios deployment `monitoring/nagios/docker-compose.nagios.yml` (Web dashboard on port 8085)
+- ✅ Implemented active probe runner `monitoring/nagios/health-checker.js`
+- ✅ Implemented & verified empirical failure and recovery simulation scripts:
+  - `monitoring/nagios/demo-failure-recovery.ps1` (executed with exit code 0)
+  - `monitoring/nagios/demo-failure-recovery.sh` (POSIX compliant)
+  - Demonstrated OK -> CRITICAL -> RECOVERY transitions and event broker dispatches
+- ✅ Created `monitoring/nagios/README.md` with operational guide and dashboard credentials
+
+### Next Actions
+- Commit Phase 10 to Git (`origin/develop`)
+- Advance to Phase 11: Final Integration & Release (Release verification, v1.0.0 tag, and milestone audit)
+
+---
+
 *Last updated: 2026-10-12*
