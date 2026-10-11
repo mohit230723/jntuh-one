@@ -1,0 +1,60 @@
+# ========================
+# UCEST One — .gitignore
+# ========================
+
+# === Node / Frontend ===
+node_modules/
+dist/
+.vite/
+*.local
+
+# === Java / Backend ===
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.log
+.mvn/wrapper/maven-wrapper.jar
+
+# === IDE ===
+.gemini/
+.idea/
+*.iml
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.classpath
+.settings/
+
+# === OS ===
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# === Environment ===
+.env
+.env.local
+.env.*.local
+
+# === Docker ===
+docker-compose.override.yml
+
+# === Kubernetes Secrets (actual, not examples) ===
+k8s/secret.yaml
+
+# === Build artifacts ===
+*.tgz
+*.zip
+
+# === Test reports ===
+e2e-tests/target/
+e2e-tests/test-output/
+
+# === Monitoring ===
+monitoring/nagios/var/
+
+# === GSD internal (keep templates/examples, ignore runtime) ===
+# .gsd/ is tracked
