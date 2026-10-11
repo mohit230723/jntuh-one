@@ -23,23 +23,34 @@ public class PublicNoticeController {
     @GetMapping("/notices")
     public ResponseEntity<Page<Notice>> getNotices(
             @RequestParam(required = false) String category,
+            @RequestParam(required = false) String search,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size) {
 
         Pageable pageable = PageRequest.of(page, size);
-        Page<Notice> result;
+        String categoryFilter = (category != null && !category.equalsIgnoreCase("ALL")) ? category.toUpperCase() : null;
+        String searchFilter = (search != null && !search.trim().isEmpty()) ? search.trim() : null;
 
-        if (category != null && !category.equalsIgnoreCase("ALL")) {
-            result = noticeRepository.findByArchivedFalseAndCategoryOrderByPinnedDescPostedDateDesc(category.toUpperCase(), pageable);
-        } else {
-            result = noticeRepository.findByArchivedFalseOrderByPinnedDescPostedDateDesc(pageable);
-        }
-
+        Page<Notice> result = noticeRepository.searchNotices(categoryFilter, searchFilter, pageable);
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/notices/{id}")
+    public ResponseEntity<Notice> getNoticeById(@PathVariable Long id) {
+        return noticeRepository.findById(id)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/notices/latest")
     public ResponseEntity<List<Notice>> getLatestNotices() {
         return ResponseEntity.ok(noticeRepository.findTop5ByArchivedFalseOrderByPinnedDescPostedDateDesc());
+    }
+
+    @GetMapping("/events")
+    public ResponseEntity<List<Notice>> getEvents() {
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Notice> eventsPage = noticeRepository.findByArchivedFalseAndCategoryOrderByPinnedDescPostedDateDesc("EVENTS", pageable);
+        return ResponseEntity.ok(eventsPage.getContent());
     }
 }

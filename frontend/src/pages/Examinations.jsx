@@ -1,15 +1,34 @@
-import React, { useState } from 'react';
-import { ArrowDown, FileText, CheckCircle2 } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { FileText, Search, ArrowRight, X, Pin } from 'lucide-react';
+import { noticeService } from '../services/noticeService';
 
 export default function Examinations() {
-  const [filter, setFilter] = useState('ALL');
+  const [category, setCategory] = useState('ALL');
+  const [search, setSearch] = useState('');
+  const [notices, setNotices] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedNotice, setSelectedNotice] = useState(null);
 
-  const notifications = [
-    { title: 'B.Tech V Semester Regular & Supplementary Time Table — Nov 2026', cat: 'EXAM', date: '2026-10-10' },
-    { title: 'Guidelines for Recounting and Re-evaluation of IV Semester Answer Scripts', cat: 'EXAM', date: '2026-10-06' },
-    { title: 'M.Tech II Semester Autonomous End Examination Results Declared', cat: 'RESULTS', date: '2026-09-30' },
-    { title: 'Schedule for Issue of Consolidated Marks Memos and Provisional Certificates', cat: 'GENERAL', date: '2026-09-22' },
-  ];
+  useEffect(() => {
+    loadNotices();
+  }, [category, search]);
+
+  const loadNotices = async () => {
+    setLoading(true);
+    try {
+      const data = await noticeService.getNotices({
+        category: category !== 'ALL' ? category : undefined,
+        search: search.trim() || undefined
+      });
+      setNotices(data.content || data || []);
+    } catch (err) {
+      console.error('Failed to load notices', err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const categories = ['ALL', 'EXAM', 'ACADEMIC', 'EVENTS', 'GENERAL'];
 
   return (
     <div className="section-gap">
@@ -85,37 +104,177 @@ export default function Examinations() {
           </div>
         </div>
 
-        {/* Circulars List */}
+        {/* Circulars List with Filter & Search */}
         <div>
-          <h3 className="heading-sm" style={{ marginBottom: '20px' }}>Examination Circulars Archive</h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-            {notifications.map((n, idx) => (
-              <div 
-                key={idx}
-                className="card-paper"
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '16px', marginBottom: '24px' }}>
+            <h3 className="heading-sm">Official Notifications & Circulars</h3>
+            
+            <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
+              {/* Search box */}
+              <div style={{ position: 'relative', width: '260px' }}>
+                <Search size={16} style={{ position: 'absolute', left: '12px', top: '16px', color: 'var(--color-slate-600)' }} />
+                <input
+                  type="text"
+                  placeholder="Search notices..."
+                  value={search}
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="input-field"
+                  style={{ paddingLeft: '36px' }}
+                />
+              </div>
+
+              {/* Category tabs */}
+              <div style={{ display: 'flex', gap: '6px' }}>
+                {categories.map((c) => (
+                  <button
+                    key={c}
+                    onClick={() => setCategory(c)}
+                    style={{
+                      background: category === c ? 'var(--color-carbon)' : 'var(--color-paper)',
+                      color: category === c ? '#ffffff' : 'var(--color-slate-700)',
+                      border: '1px solid var(--color-cloud)',
+                      borderRadius: 'var(--radius-lg)',
+                      padding: '8px 14px',
+                      fontSize: '12px',
+                      fontWeight: 600,
+                      cursor: 'pointer',
+                      transition: 'all 0.15s ease'
+                    }}
+                  >
+                    {c}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {loading ? (
+            <div className="card-paper" style={{ padding: '32px', textAlign: 'center', color: 'var(--color-slate-600)' }}>
+              Loading announcements...
+            </div>
+          ) : notices.length === 0 ? (
+            <div className="card-paper" style={{ padding: '32px', textAlign: 'center', color: 'var(--color-slate-600)' }}>
+              No notices found matching "{search}" in category "{category}".
+            </div>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+              {notices.map((n) => (
+                <div 
+                  key={n.id}
+                  className="card-paper"
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    padding: '20px 24px',
+                    cursor: 'pointer',
+                    transition: 'border-color 0.15s ease'
+                  }}
+                  onClick={() => setSelectedNotice(n)}
+                >
+                  <div style={{ display: 'flex', alignItems: 'flex-start', gap: '16px', maxWidth: '85%' }}>
+                    <div style={{
+                      background: n.pinned ? 'rgba(228, 43, 12, 0.08)' : 'var(--color-vellum)',
+                      padding: '10px',
+                      borderRadius: 'var(--radius-lg)',
+                      color: n.pinned ? 'var(--color-vermillion-signal)' : 'var(--color-slate-600)',
+                      marginTop: '2px'
+                    }}>
+                      {n.pinned ? <Pin size={18} /> : <FileText size={18} />}
+                    </div>
+                    <div>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '4px' }}>
+                        <span className="eyebrow-pill" style={{ padding: '2px 8px', fontSize: '11px' }}>{n.category}</span>
+                        {n.pinned && (
+                          <span style={{ fontSize: '11px', color: 'var(--color-vermillion-signal)', fontWeight: 600 }}>PINNED</span>
+                        )}
+                        <span style={{ fontSize: '12px', color: 'var(--color-iron)' }}>{n.postedDate}</span>
+                      </div>
+                      <div style={{ fontSize: '16px', fontWeight: 500, color: 'var(--color-slate-900)', marginBottom: '4px' }}>
+                        {n.title}
+                      </div>
+                      <p style={{ fontSize: '13px', color: 'var(--color-slate-600)', margin: 0 }}>
+                        {n.description}
+                      </p>
+                    </div>
+                  </div>
+
+                  <button 
+                    className="btn-vermillion" 
+                    style={{ padding: '8px 16px', fontSize: '12px', whiteSpace: 'nowrap' }}
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedNotice(n);
+                    }}
+                  >
+                    View <ArrowRight size={14} style={{ marginLeft: '6px' }} />
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {/* Notice Detail Modal */}
+        {selectedNotice && (
+          <div style={{
+            position: 'fixed',
+            inset: 0,
+            background: 'rgba(0,0,0,0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000,
+            padding: '20px'
+          }}>
+            <div className="card-paper" style={{ maxWidth: '640px', width: '100%', padding: '32px', position: 'relative' }}>
+              <button 
+                onClick={() => setSelectedNotice(null)}
                 style={{
-                  display: 'flex',
-                  justifyContent: 'space-between',
-                  alignItems: 'center',
-                  padding: '16px 24px'
+                  position: 'absolute',
+                  top: '20px',
+                  right: '20px',
+                  background: 'transparent',
+                  border: 'none',
+                  cursor: 'pointer',
+                  color: 'var(--color-slate-600)'
                 }}
               >
-                <div>
-                  <div style={{ fontSize: '15px', fontWeight: 500, color: 'var(--color-slate-900)' }}>
-                    {n.title}
-                  </div>
-                  <div style={{ fontSize: '12px', color: 'var(--color-slate-600)', marginTop: '2px' }}>
-                    Category: {n.cat} • Released on {n.date}
-                  </div>
-                </div>
+                <X size={20} />
+              </button>
 
-                <button className="btn-ghost" style={{ padding: '6px 12px', fontSize: '12px' }}>
-                  Download PDF
+              <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '16px' }}>
+                <span className="eyebrow-pill">{selectedNotice.category}</span>
+                <span style={{ fontSize: '13px', color: 'var(--color-iron)' }}>{selectedNotice.postedDate}</span>
+                {selectedNotice.author && (
+                  <span style={{ fontSize: '13px', color: 'var(--color-iron)' }}>• By {selectedNotice.author}</span>
+                )}
+              </div>
+
+              <h2 className="heading-sm" style={{ marginBottom: '16px', lineHeight: 1.3 }}>
+                {selectedNotice.title}
+              </h2>
+
+              <div style={{
+                background: 'var(--color-vellum)',
+                padding: '20px',
+                borderRadius: 'var(--radius-lg)',
+                fontSize: '15px',
+                lineHeight: 1.6,
+                color: 'var(--color-slate-700)',
+                marginBottom: '24px'
+              }}>
+                {selectedNotice.description}
+              </div>
+
+              <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px' }}>
+                <button className="btn-carbon" onClick={() => setSelectedNotice(null)}>
+                  Close
                 </button>
               </div>
-            ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );

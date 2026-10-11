@@ -121,43 +121,43 @@ updated: 2026-10-11
 ---
 
 ### Phase 4: Core Feature Implementation
-**Status:** ⬜ Not Started
+**Status:** ✅ Complete
 **Objective:** Implement all database-backed functionality — public content APIs, student features, faculty features, and admin features.
 **Role:** P2 (Backend APIs) → P3 (Frontend integration)
 **Depends on:** Phase 3
 
 **Backend Tasks (P2):**
-- [ ] T4.1: Public notices API (GET /api/public/notices with category filter, search, pagination)
-- [ ] T4.2: Public departments API (list + detail by code)
-- [ ] T4.3: Public events API
-- [ ] T4.4: Student dashboard API (aggregate: attendance %, upcoming classes, recent notices)
-- [ ] T4.5: Student attendance API (subject-wise breakdown)
-- [ ] T4.6: Student results API (semester-wise marks)
-- [ ] T4.7: Student timetable API
-- [ ] T4.8: Student fees API + mock payment
-- [ ] T4.9: Faculty classes API
-- [ ] T4.10: Faculty attendance marking API
-- [ ] T4.11: Faculty marks entry API
-- [ ] T4.12: Admin notice CRUD API
-- [ ] T4.13: Admin user creation API
-- [ ] T4.14: Admin stats API
-- [ ] T4.15: JUnit tests for all service layers
+- [x] T4.1: Public notices API (GET /api/public/notices with category filter, search, pagination)
+- [x] T4.2: Public departments API (list + detail by code)
+- [x] T4.3: Public events API
+- [x] T4.4: Student dashboard API (aggregate: attendance %, upcoming classes, recent notices)
+- [x] T4.5: Student attendance API (subject-wise breakdown)
+- [x] T4.6: Student results API (semester-wise marks)
+- [x] T4.7: Student timetable API
+- [x] T4.8: Student fees API + mock payment
+- [x] T4.9: Faculty classes API
+- [x] T4.10: Faculty attendance marking API
+- [x] T4.11: Faculty marks entry API
+- [x] T4.12: Admin notice CRUD API
+- [x] T4.13: Admin user creation API
+- [x] T4.14: Admin stats API
+- [x] T4.15: JUnit tests for all service layers
 
 **Frontend Tasks (P3) — after corresponding backend API is verified:**
-- [ ] T4.16: Notice list page with filters and search
-- [ ] T4.17: Department list + CSE detail page
-- [ ] T4.18: Events display
-- [ ] T4.19: Student dashboard page
-- [ ] T4.20: Student attendance page
-- [ ] T4.21: Student results page
-- [ ] T4.22: Student timetable page
-- [ ] T4.23: Student fees page with mock payment
-- [ ] T4.24: Faculty class management page
-- [ ] T4.25: Faculty attendance marking page
-- [ ] T4.26: Faculty marks entry page
-- [ ] T4.27: Admin notice management page
-- [ ] T4.28: Admin user creation page
-- [ ] T4.29: Admin dashboard/stats page
+- [x] T4.16: Notice list page with filters and search
+- [x] T4.17: Department list + CSE detail page
+- [x] T4.18: Events display
+- [x] T4.19: Student dashboard page
+- [x] T4.20: Student attendance page
+- [x] T4.21: Student results page
+- [x] T4.22: Student timetable page
+- [x] T4.23: Student fees page with mock payment
+- [x] T4.24: Faculty class management page
+- [x] T4.25: Faculty attendance marking page
+- [x] T4.26: Faculty marks entry page
+- [x] T4.27: Admin notice management page
+- [x] T4.28: Admin user creation page
+- [x] T4.29: Admin dashboard/stats page
 
 **Acceptance:** All APIs return correct data, all frontend pages display and interact correctly, JUnit tests pass.
 

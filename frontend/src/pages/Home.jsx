@@ -11,27 +11,25 @@ import {
   ChevronRight,
   ExternalLink
 } from 'lucide-react';
-import api from '../services/api';
+import { noticeService } from '../services/noticeService';
 
 export default function Home() {
   const [notices, setNotices] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Attempt fetching notices, with graceful fallback to seed notices
-    api.get('/public/notices')
-      .then((res) => {
-        setNotices(res.data?.content || []);
-      })
-      .catch(() => {
-        // Mock fallback if backend is not yet started
-        setNotices([
-          { id: 1, title: 'Semester End Examination Schedule Notification', category: 'EXAM', postedDate: '2026-10-10', pinned: true },
-          { id: 2, title: 'Condonation of Attendance Notification (65% - 75%)', category: 'ACADEMIC', postedDate: '2026-10-08', pinned: true },
-          { id: 3, title: 'Campus Placement Drive — Oracle & Salesforce', category: 'GENERAL', postedDate: '2026-10-05', pinned: false },
-        ]);
-      })
-      .finally(() => setLoading(false));
+    async function load() {
+      setLoading(true);
+      try {
+        const data = await noticeService.getLatestNotices();
+        setNotices(Array.isArray(data) ? data : (data.content || []));
+      } catch (err) {
+        console.error('Failed to load notices', err);
+      } finally {
+        setLoading(false);
+      }
+    }
+    load();
   }, []);
 
   return (

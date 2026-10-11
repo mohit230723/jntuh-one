@@ -109,4 +109,32 @@ Build and integrate full-stack application foundations: Spring Boot 3 backend sk
 
 ---
 
+## Session 4: 2026-10-12 — Phase 4: Core Feature Implementation
+**Focus:** Full database-backed feature implementation across backend APIs and frontend command desks  
+**Roles:** P2 (Backend APIs) + P3 (Frontend Integration)
+
+### Completed Work
+- ✅ Implemented all 10 JPA entities: `FacultyProfile`, `StudentProfile`, `Course`, `ClassAssignment`, `AttendanceSession`, `StudentAttendance`, `StudentMark`, `Timetable`, `FeeRecord`, `FeeTransaction`
+- ✅ Implemented 11 Spring Data JPA repositories with query methods and aggregations
+- ✅ Implemented 14 DTOs for frozen API contracts
+- ✅ Implemented `PublicNoticeController` (search + category + pagination), `PublicDepartmentController`
+- ✅ Implemented `StudentPortalController` (dashboard, attendance ledger, results grade cards, timetable, fees, and mock pay)
+- ✅ Implemented `FacultyPortalController` (class cohorts, enrolled student roster, attendance session recording, and internal marks entry)
+- ✅ Implemented `AdminPortalController` (KPI stats, notice publishing/pinning/archiving, user provisioning with BCrypt)
+- ✅ Created JUnit test suite (`PublicNoticeControllerTest`, `AdminPortalControllerTest`) and H2 test configuration
+- ✅ Implemented 5 frontend services with live Axios client & resilient fallbacks (`noticeService`, `departmentService`, `studentService`, `facultyService`, `adminService`)
+- ✅ Connected public pages: `Examinations` (notice search, category filtering, detail modal), `Departments` (live roster), `CampusLife` (events), `Home` (latest notices ticker)
+- ✅ Enhanced role portals:
+  - `StudentDashboard`: multi-tab command desk with Overview, Attendance Ledger with detention warnings (<75%), Results grade sheets by semester, Weekly Timetable schedule, and Fees with interactive payment modal and instant receipt generation
+  - `FacultyDashboard`: assigned cohorts, interactive attendance register with bulk toggles, and internal marks entry form for Mid-1, Mid-2, and Assignments
+  - `AdminDashboard`: KPI overview cards, Notice management with pin/unpin/archive actions, and User provisioning form
+- ✅ Verified frontend production build (`npm run build`) in 5.62s with zero errors
+- ✅ Dev server hot-module-reloading active in background at `http://localhost:5173/`
+
+### Next Actions
+- Commit Phase 4 to Git (`origin/develop`)
+- Advance to Phase 5: Complete Public Website & Portal
+
+---
+
 *Last updated: 2026-10-12*
