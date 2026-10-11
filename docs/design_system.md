@@ -1,107 +1,181 @@
-# Design System & UI Direction Specification
+# Design System — Orderful Command Deck Style Guide
 
 > **Document ID:** DOC-105  
-> **Phase:** Phase 1 — Requirements, Research & Content  
-> **Role:** P4 (Research, Content & QA) / P3 (Frontend Lead)  
-> **Note:** Exact fine-tuned design values and style prompts will be provided by the developer during Phase 3 frontend implementation.
+> **Source:** Orderful Style Reference  
+> **Philosophy:** *Industrial command deck — a logistics dispatcher's printed control sheet in black ink and surgical vermillion, every page restrained enough to let a single CTA shout.*  
+> **Theme:** Light (Paper & Vellum canvas, Ink Black & Slate typography, Surgical Vermillion action punctuation)
 
 ---
 
-## 1. Design Philosophy
+## 1. Core Visual Principles
 
-**UCEST One** reflects the dignity, academic authority, and forward-looking technological excellence of JNTUH UCEST. The design bridges traditional prestige with modern digital speed:
-- **Clean & Academic**: Generous whitespace, structured hierarchies, intentional typography.
-- **Vibrant & Elevated**: Refined navy primary tones accented with gold highlights, avoiding muddy or flat colors.
-- **Responsive & Tactile**: Smooth micro-interactions, subtle shadow elevations, and crisp focus rings.
+1. **Achromatic Discipline**: Near-pure achromatic surface where black-and-white typography meets a single surgical vermillion accent. Most screens remain monochrome, letting the single red-orange mark function as the sole actionable signal.
+2. **Universal 8px Radius**: Standardized 8px border-radius across all containers, cards, buttons, inputs, tags, and navbars. Strictly **never** use 4px, 6px, 12px, or pill (9999px) border radii.
+3. **Restrained Editorial Typography**: Grotesk type spanning weights 100–700. Large display headlines (48–72px) use tight negative tracking (`−0.025em` to `−0.03em`) in light-to-regular weights (300–500) rather than heavy bold, giving authoritative restraint. Uppercase eyebrows expand with `0.025em` tracking for an industrial-label voice.
+4. **Disciplined Elevation**: Single two-layer shadow stack used sparingly: `rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px`.
+5. **8px Grid Rhythm**: Base 8px spacing unit (8, 16, 24, 32, 40, 48, 64, 80, 96px). Section gap of 64px. Max width 1200px centered.
 
 ---
 
-## 2. Baseline Color Palette (Design Tokens)
+## 2. Design Tokens
 
-*Subject to fine-tuning via developer's Phase 3 design prompt.*
-
+### 2.1 Color Tokens
 ```css
 :root {
-  /* Brand Primaries */
-  --color-primary-navy-900: #0A192F;  /* Deepest navy, headers, dark mode bg */
-  --color-primary-navy-800: #0F2042;  /* Core brand navy, navbar */
-  --color-primary-navy-700: #1E3A8A;  /* Accent blue, interactive links */
+  /* Action Punctuation */
+  --color-vermillion-signal: #e42b0c;
+  --gradient-vermillion-signal: linear-gradient(94deg, rgb(255, 2, 1) -33.85%, rgb(255, 120, 2) -1.54%, rgb(255, 2, 1) 73.55%);
 
-  /* Brand Accents (Gold) */
-  --color-accent-gold-500:  #D4AF37;  /* Metallic institutional gold */
-  --color-accent-gold-400:  #E5C158;  /* Hover state gold */
-  --color-accent-gold-600:  #B8860B;  /* Deep gold for borders/badges */
+  /* Neutrals & Typography */
+  --color-ink-black: #000000;
+  --color-carbon: #1f1f1f;
+  --color-slate-900: #101828;  /* Display and heading text, dominant typographic color */
+  --color-slate-700: #364153;  /* Navigation text, active items, secondary headings */
+  --color-slate-600: #4a5565;  /* Body copy, sub-text, icon strokes, eyebrow labels */
+  --color-steel: #676767;      /* Subdued text */
+  --color-iron: #8a8a8a;       /* Tertiary helper text, dividers */
+  --color-mist: #99a1af;       /* Icon borders, disabled states, placeholders */
+  --color-cloud: #d4d4d4;      /* Button borders, input borders, dividers */
+  --color-frost: #e5e7eb;      /* Card hairline borders, subtle container edges */
 
-  /* Neutral Surface & Backgrounds */
-  --color-neutral-50:       #F8FAFC;  /* Light page background */
-  --color-neutral-100:      #F1F5F9;  /* Card subtle background */
-  --color-neutral-200:      #E2E8F0;  /* Standard border */
-  --color-neutral-700:      #334155;  /* Secondary text */
-  --color-neutral-900:      #0F172A;  /* Primary body text */
-  --color-white:            #FFFFFF;  /* Pure white cards / modals */
+  /* Surfaces */
+  --color-paper: #ffffff;      /* Card surfaces, primary content canvas */
+  --color-vellum: #f5f5f5;     /* Page canvas base */
+  
+  /* Semantic Status Indicators */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #e42b0c;
+}
+```
 
-  /* Feedback & Indicators */
-  --color-success:          #10B981;  /* Attendance >= 75%, passed exams */
-  --color-warning:          #F59E0B;  /* Attendance 65%-74% condonation alert */
-  --color-danger:           #EF4444;  /* Attendance < 65% detention risk, fee dues */
-  --color-info:             #3B82F6;  /* Notice badges, general alerts */
+### 2.2 Typography Scale
+```css
+:root {
+  --font-primary: 'telegraf', Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-secondary: 'modernGothic', Inter, sans-serif;
+
+  --text-micro: 12px;
+  --leading-micro: 1.5;
+  --tracking-micro: 0.3px;
+
+  --text-caption: 14px;
+  --leading-caption: 1.43;
+
+  --text-body-sm: 16px;
+  --leading-body-sm: 1.5;
+
+  --text-body: 18px;
+  --leading-body: 1.5;
+
+  --text-body-lg: 20px;
+  --leading-body-lg: 1.43;
+
+  --text-subheading: 24px;
+  --leading-subheading: 1.38;
+
+  --text-heading-sm: 30px;
+  --leading-heading-sm: 1.33;
+
+  --text-heading: 48px;
+  --leading-heading: 1.2;
+  --tracking-heading: -1.2px;
+
+  --text-heading-lg: 60px;
+  --leading-heading-lg: 1.0;
+  --tracking-heading-lg: -1.5px;
+
+  --text-display: 72px;
+  --leading-display: 1.0;
+  --tracking-display: -2.16px;
+}
+```
+
+### 2.3 Spacing & Geometry
+```css
+:root {
+  --radius-universal: 8px;
+
+  --spacing-8: 8px;
+  --spacing-16: 16px;
+  --spacing-24: 24px;
+  --spacing-32: 32px;
+  --spacing-40: 40px;
+  --spacing-48: 48px;
+  --spacing-64: 64px;
+  --spacing-80: 80px;
+  --spacing-96: 96px;
+
+  --page-max-width: 1200px;
+  --section-gap: 64px;
+
+  --shadow-subtle: rgba(0, 0, 0, 0.1) 0px 1px 3px 0px, rgba(0, 0, 0, 0.1) 0px 1px 2px -1px;
 }
 ```
 
 ---
 
-## 3. Typography & Hierarchy
+## 3. Component Blueprints
 
-### Primary Font Families
-- **Display & Headings**: Inter or Outfit (Google Fonts) with tight optical kerning.
-- **Body & Data Tables**: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto.
-- **Monospace (Roll numbers, Code)**: JetBrains Mono / Fira Code.
+### 3.1 Vermillion Filled Action Button (Primary CTA)
+- Background: `#e42b0c`
+- Text: `#ffffff`, 14–16px weight 500, uppercase, tracking `0.025em`
+- Border-radius: `8px`
+- Padding: `12px 24px` (compact) or `16px 24px` (comfortable)
+- Trailing arrow icon: `→`
+- Usage rule: *At most one per visible fold*.
 
-### Type Scale
-- `Display Hero`: 2.5rem (40px) - 3.5rem (56px), Weight 700 / 800
-- `H1 Page Title`: 2.0rem (32px) - 2.5rem (40px), Weight 700
-- `H2 Section Title`: 1.5rem (24px) - 1.875rem (30px), Weight 600
-- `H3 Card Title`: 1.25rem (20px), Weight 600
-- `Body Large`: 1.125rem (18px), Weight 400 / 500
-- `Body Standard`: 1.0rem (16px), Weight 400
-- `Small / Badges`: 0.875rem (14px), Weight 500 / 600
-- `Caption / Timestamps`: 0.75rem (12px), Weight 400
+### 3.2 Sunset Gradient Nav Button (Sole Conversion in Header)
+- Background: `linear-gradient(94deg, #ff0201 -33.85%, #ff7802 -1.54%, #ff0201 73.55%)`
+- Text: `#ffffff` uppercase, 14px weight 600, tracking `0.025em`
+- Border-radius: `8px`, padding `12px 20px`
 
----
+### 3.3 Carbon Dark Action Button (Secondary CTA)
+- Background: `#1f1f1f`
+- Text: `#ffffff`, 14px weight 500 uppercase, tracking `0.025em`
+- Border-radius: `8px`, padding `16px 24px`
 
-## 4. Breakpoints & Responsive Grid
+### 3.4 Outlined Eyebrow Pill Badge
+- Border: `1px solid #d4d4d4`
+- Background: transparent
+- Border-radius: `8px`
+- Padding: `4px 12px`
+- Text: 12px weight 500 uppercase, `#4a5565`, tracking `0.3px`
 
-Standard mobile-first breakpoint ladder:
-- `sm`: 640px (Small tablets & landscape phones)
-- `md`: 768px (Tablets portrait)
-- `lg`: 1024px (Laptops / Small desktops)
-- `xl`: 1280px (Standard desktops)
-- `2xl`: 1536px (Large wide monitors)
+### 3.5 Feature / Department Card
+- Surface: `#ffffff`
+- Border: `1px solid #e5e7eb`
+- Border-radius: `8px`
+- Padding: `32px`
+- Shadow: `--shadow-subtle`
+- Title: 24px weight 400 at `#101828`
+- Body: 16px weight 400 at `#4a5565`, line-height `1.5`
+- Trailing link: `Learn more →` in `#4a5565`
 
----
+### 3.6 Stat Block
+- Value: 60px weight 300 in `#101828`, tracking `−1.5px`
+- Label: 14px weight 400 in `#4a5565`, line-height `1.43`
+- Direct float on section surface without chrome
 
-## 5. Reusable Component Patterns
-
-### 5.1 Navigation Bar
-- Top alert banner for urgent circular ticker.
-- Main sticky navbar with University Crest / Logo, College title, navigation dropdowns, and high-visibility "Portal Login" action button.
-- Mobile slide-out drawer with high-contrast links.
-
-### 5.2 Notice Card Component
-- Date badge on left (`DD MMM YYYY`).
-- Title with category tag (`EXAM`, `ACADEMIC`, `EVENTS`).
-- Brief excerpt and expandable modal reader.
-- "PINNED" ribbon for urgent notices.
-
-### 5.3 Student Portal Attendance Meter
-- Circular or bar progress gauge showing overall percentage.
-- Color dynamic: Green (>= 75%), Amber (65-74%), Red (< 65%).
-- Subject-by-subject expandable rows with attended / total classes count.
-
-### 5.4 Timetable Grid
-- Responsive tab selector (Monday through Friday).
-- Period cards showing time slot (e.g. `09:30 - 10:30 AM`), subject code, faculty name, and room number.
+### 3.7 Form Text Inputs
+- Surface: `#ffffff`
+- Border: `1px solid #d4d4d4`
+- Border-radius: `8px`
+- Height: `48px`, padding `12px 16px`
+- Focus: `1px solid #101828` (no glow)
 
 ---
 
-*Authored by: P4 (Research, Content & QA Lead)*
+## 4. Strict Do's and Don'ts
+
+| Do | Don't |
+| :--- | :--- |
+| Use `#e42b0c` exclusively for filled primary action buttons & 1-2px action borders | **Never** use `#e42b0c` for text links, background decoration, or non-action elements |
+| Apply `8px` border-radius uniformly to all elements | **Never** use 4px, 6px, 12px, or 9999px pill radii |
+| Set display headlines at 48–72px with tight `−0.025em` to `−0.03em` tracking | **Never** set display text in weight 700 bold; prefer 300–500 light/regular |
+| Maintain monochrome restraint with Vellum, Paper, and Slate | **Never** introduce secondary saturated chromatic colors |
+| Keep body text at 16–18px with generous 1.5 line height | **Never** use body text below 14px (12px reserved for uppercase eyebrows only) |
+
+---
+
+*Adopted into UCEST One Design Architecture.*

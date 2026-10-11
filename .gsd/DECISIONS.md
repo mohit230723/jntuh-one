@@ -99,4 +99,26 @@ User: mohit230723
 
 ---
 
-*Last updated: 2026-10-11*
+## [DECISION-007] Visual Design System — Orderful Command Deck Aesthetic
+
+**Date**: 2026-10-12
+**Status**: Accepted
+
+### Context
+Developer provided the official style reference: "industrial command deck — a logistics dispatcher's printed control sheet in black ink and surgical vermillion, every page restrained enough to let a single CTA shout."
+
+### Decision
+Adopt the Orderful design system across the entire UCEST One platform:
+- **Palette**: Achromatic Vellum (`#f5f5f5`) canvas, Paper (`#ffffff`) surfaces, Carbon (`#1f1f1f`) panels, Ink Black (`#000000`), Slate typography (`#101828`, `#364153`, `#4a5565`), punctuated exclusively by Surgical Vermillion (`#e42b0c` / Sunset Flux gradient) for primary action CTAs and navigation focus.
+- **Geometry**: Universal 8px radius across all containers, cards, buttons, inputs, tags, and navbars. (Strictly no 4px, 6px, 12px, or pill radii).
+- **Typography**: Editorial geometric grotesk (Telegraf / Inter / Söhne) with tight negative tracking on display (`-2.16px` at 72px, `-1.5px` at 60px) and restrained weights (300-500).
+- **Shadows**: Single disciplined two-layer stack (`rgba(0,0,0,0.1) 0 1px 3px 0, rgba(0,0,0,0.1) 0 1px 2px -1px`).
+
+### Consequences
+- Unmistakable, high-impact enterprise B2B command deck feel
+- Exceptional scannability, clarity, and authority
+- Clean, maintainable CSS token architecture
+
+---
+
+*Last updated: 2026-10-12*

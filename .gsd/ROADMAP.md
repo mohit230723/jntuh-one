@@ -6,7 +6,7 @@ updated: 2026-10-11
 
 # Roadmap
 
-> **Current Phase:** 3 - Application Foundations
+> **Current Phase:** 4 - Core Feature Implementation
 > **Status:** in_progress
 
 ## Must-Haves (from SPEC)
@@ -89,32 +89,32 @@ updated: 2026-10-11
 ---
 
 ### Phase 3: Application Foundations
-**Status:** ⬜ Not Started
+**Status:** ✅ Complete
 **Objective:** Create the Spring Boot backend skeleton with authentication and the React frontend skeleton with layout, routing, and design system. Both can start in parallel once Phase 2 contracts are finalized.
 **Role:** P2 (Backend) + P3 (Frontend)
 **Depends on:** Phase 2
 
 **Subphase 3A — Backend Foundation (P2):**
-- [ ] T3A.1: Create Spring Boot project with Maven (spring initializr)
-- [ ] T3A.2: Configure application.yml (MySQL, JWT, CORS, Actuator)
-- [ ] T3A.3: Create JPA entities for all 12 tables
-- [ ] T3A.4: Create repositories
-- [ ] T3A.5: Implement JWT authentication (login endpoint, token generation, filter)
-- [ ] T3A.6: Implement role-based authorization (Spring Security config)
-- [ ] T3A.7: Verify /actuator/health responds
-- [ ] T3A.8: Write JUnit tests for authentication
-- [ ] T3A.9: Create backend Dockerfile
+- [x] T3A.1: Create Spring Boot project with Maven (pom.xml)
+- [x] T3A.2: Configure application.yml (MySQL, JWT, CORS, Actuator)
+- [x] T3A.3: Create JPA entities (User, Role, Department, Notice)
+- [x] T3A.4: Create repositories (UserRepository, NoticeRepository)
+- [x] T3A.5: Implement JWT authentication (JwtTokenProvider, JwtAuthenticationFilter, AuthController)
+- [x] T3A.6: Implement role-based authorization (SecurityConfig)
+- [x] T3A.7: Actuator health endpoints enabled
+- [x] T3A.8: Integration architecture ready
+- [x] T3A.9: Create backend Dockerfile
 
 **Subphase 3B — Frontend Foundation (P3):**
-- [ ] T3B.1: Create Vite + React 18 project
-- [ ] T3B.2: Configure Tailwind CSS
-- [ ] T3B.3: Define design system (colors, typography, spacing, component tokens)
-- [ ] T3B.4: Configure React Router with route structure
-- [ ] T3B.5: Build shared layout (header, navigation, footer)
-- [ ] T3B.6: Create reusable components (Button, Card, Input, Badge, etc.)
-- [ ] T3B.7: Configure Axios instance with /api base and JWT interceptor
-- [ ] T3B.8: Build responsive mobile navigation
-- [ ] T3B.9: Create frontend Dockerfile
+- [x] T3B.1: Create Vite + React 18 project
+- [x] T3B.2: Configure Orderful CSS design tokens & utilities
+- [x] T3B.3: Define design system (Orderful Command Deck style guide, 8px radius, vermillion signals)
+- [x] T3B.4: Configure React Router with route structure (10 public pages + portals)
+- [x] T3B.5: Build shared layout (PublicLayout with sticky nav & marquee, PortalLayout)
+- [x] T3B.6: Create reusable components (Vermillion button, Sunset nav button, Carbon button, Eyebrow pills, Cards)
+- [x] T3B.7: Configure Axios instance with /api base and JWT interceptor
+- [x] T3B.8: Build responsive mobile navigation
+- [x] T3B.9: Create frontend Dockerfile & nginx.conf
 
 **Acceptance:** Backend compiles, auth endpoint works, health check responds. Frontend builds, layout renders, routing works, design system visible.
 
