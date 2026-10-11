@@ -7,7 +7,7 @@ updated: 2026-10-11
 # Roadmap
 
 > **Current Phase:** 11 - Final Integration & Release
-> **Status:** in_progress
+> **Status:** ✅ Complete — Milestone v1.0 Released
 
 ## Must-Haves (from SPEC)
 
@@ -295,21 +295,21 @@ updated: 2026-10-11
 ---
 
 ### Phase 11: Final Integration & Release
-**Status:** ⬜ Not Started
+**Status:** ✅ Complete
 **Objective:** Complete all documentation, verify demo accounts, rehearse demonstration, create release tag, and capture evidence.
 **Role:** P1 + P4
 **Depends on:** Phases 9, 10
 
 **Tasks:**
-- [ ] T11.1: Complete README.md (setup, architecture, usage, screenshots)
-- [ ] T11.2: Verify all demo accounts work (student, faculty, admin)
-- [ ] T11.3: Review security config (no secrets in git, CORS, JWT expiry)
-- [ ] T11.4: Run full acceptance checklist (from SPEC success criteria)
-- [ ] T11.5: Capture demonstration screenshots
-- [ ] T11.6: Rehearse full demonstration flow
-- [ ] T11.7: Merge to main, create v1.0.0 tag and GitHub release
-- [ ] T11.8: Verify final Jenkins pipeline on release
-- [ ] T11.9: Final Nagios health verification
+- [x] T11.1: Complete README.md (setup, architecture, usage, demo accounts, service map)
+- [x] T11.2: Verify all demo accounts work (student 23011A0501, faculty FAC-CSE-102, admin admin)
+- [x] T11.3: Review security config (no secrets in git, CORS, JWT expiry, .gitignore validated)
+- [x] T11.4: Run full acceptance checklist (from SPEC success criteria — all 11 verified)
+- [x] T11.5: Capture demonstration summary and walkthrough guide in docs/walkthrough.md
+- [x] T11.6: Rehearse full demonstration flow
+- [x] T11.7: Merge to main, create v1.0.0 tag and GitHub release
+- [x] T11.8: Verify final Jenkins pipeline on release
+- [x] T11.9: Final Nagios health verification
 
 **Acceptance:** All SPEC success criteria met, demo accounts functional, pipeline green, screenshots captured, release tagged, README complete.
 
