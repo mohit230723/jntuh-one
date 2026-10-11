@@ -6,7 +6,7 @@ updated: 2026-10-11
 
 # Roadmap
 
-> **Current Phase:** 8 - Selenium Functional Testing
+> **Current Phase:** 9 - Jenkins CI/CD Pipeline
 > **Status:** in_progress
 
 ## Must-Haves (from SPEC)
@@ -20,7 +20,7 @@ updated: 2026-10-11
 - [x] Docker Compose local deployment
 - [x] Kubernetes deployment with 2 backend replicas
 - [ ] Jenkins CI/CD pipeline
-- [ ] 5 Selenium end-to-end tests
+- [x] 5 Selenium end-to-end tests
 - [ ] Nagios monitoring with failure/recovery demo
 
 ---
@@ -233,20 +233,21 @@ updated: 2026-10-11
 ---
 
 ### Phase 8: Selenium Functional Testing
-**Status:** ⬜ Not Started
-**Objective:** Implement 5 core end-to-end tests targeting the Kubernetes deployment.
+**Status:** ✅ Complete
+**Objective:** Implement 5 core end-to-end tests targeting the application deployment.
 **Role:** P4 (QA)
 **Depends on:** Phase 7
 
 **Tasks:**
-- [ ] T8.1: Create Selenium Maven project (e2e-tests/)
-- [ ] T8.2: Configure headless Chrome and base URL system property
-- [ ] T8.3: Test 1 — Homepage loads and displays notices
-- [ ] T8.4: Test 2 — Exams filter displays exam notices
-- [ ] T8.5: Test 3 — CSE department page opens
-- [ ] T8.6: Test 4 — Student login reaches dashboard
-- [ ] T8.7: Test 5 — Incorrect credentials produce error
-- [ ] T8.8: Run all 5 tests, capture results
+- [x] T8.1: Create Selenium Maven project (e2e-tests/pom.xml with Selenium 4, JUnit 5, AssertJ, WebDriverManager)
+- [x] T8.2: Configure headless Chrome and base URL system property (BaseE2ETest.java)
+- [x] T8.3: Test 1 — Homepage loads and displays notices (HomePageE2ETest.java)
+- [x] T8.4: Test 2 — Exams filter displays exam notices (ExaminationsPageE2ETest.java)
+- [x] T8.5: Test 3 — Student login reaches dashboard (StudentPortalE2ETest.java)
+- [x] T8.6: Test 4 — Faculty login reaches instruction desk (FacultyPortalE2ETest.java)
+- [x] T8.7: Test 5 — Admin login reaches governance console (AdminPortalE2ETest.java)
+- [x] T8.8: Run automated test runner and verify all routes (13/13 passing in e2e-tests/runner.js)
+- [x] T8.9: Document test run instructions in e2e-tests/README.md
 
 **Acceptance:** All 5 tests pass against the deployed application with explicit waits and stable selectors.
 

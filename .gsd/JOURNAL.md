@@ -264,4 +264,35 @@ Build and integrate full-stack application foundations: Spring Boot 3 backend sk
 
 ---
 
+## Session 8: 2026-10-12 — Phase 8: Selenium Functional Testing
+**Focus:** Complete Selenium 4 / JUnit 5 automated test suite, headless Chrome runner, locator test IDs, and cross-route empirical verification  
+**Roles:** P4 (QA Lead)
+
+### Completed Work
+- ✅ Configured `e2e-tests/pom.xml`:
+  - Selenium Java 4.21.0, Boni Garcia WebDriverManager 5.8.0, JUnit 5 Jupiter, AssertJ 3.25.3
+  - Dynamic base URL parameterization (`-DbaseUrl=<url>`)
+- ✅ Implemented `e2e-tests/src/test/java/edu/jntuh/ucest/e2e/BaseE2ETest.java`:
+  - Automated headless Chrome WebDriver initialization (`--headless=new`, `--window-size=1920,1080`)
+  - Explicit WebDriverWait helpers, locator polling, and teardown
+- ✅ Implemented 5 Core End-to-End Tests:
+  - `HomePageE2ETest.java`: Verifies homepage load, brand mark (`UCEST ONE*`), top emergency dispatch marquee, and latest official circulars ticker
+  - `ExaminationsPageE2ETest.java`: Verifies examination branch grading scale, `#search-notices-input` keyword filtering, and `#category-tab-exam` category filtering
+  - `StudentPortalE2ETest.java`: Authenticates student (`#quick-fill-student` / `23011A0501`), validates `/portal/student` dashboard, and switches `#tab-attendance`, `#tab-results`, and `#tab-fees`
+  - `FacultyPortalE2ETest.java`: Authenticates faculty (`#quick-fill-faculty` / `FAC-CSE-102`), validates `/portal/faculty` class cohorts, and switches `#faculty-tab-marks` and `#faculty-tab-attendance`
+  - `AdminPortalE2ETest.java`: Authenticates admin (`#quick-fill-admin` / `admin`), validates `/portal/admin` governance console, and switches `#admin-tab-notices` and `#admin-tab-users`
+- ✅ Enhanced Frontend Locators:
+  - Added unique `id` and `data-testid` attributes across `Login.jsx`, `Examinations.jsx`, `Home.jsx`, `StudentDashboard.jsx`, `FacultyDashboard.jsx`, and `AdminDashboard.jsx`
+- ✅ Implemented Automated Node Verification Runner (`e2e-tests/runner.js`):
+  - Executed automated route validation: **13 Passed, 0 Failed out of 13 routes** with exit code 0
+- ✅ Configured root `package.json`:
+  - Added `"test:e2e": "node e2e-tests/runner.js"` and `"test:e2e:maven": "cd e2e-tests && mvn test"`
+- ✅ Created `e2e-tests/README.md` with complete execution guide for local and CI/CD pipelines
+
+### Next Actions
+- Commit Phase 8 to Git (`origin/develop`)
+- Advance to Phase 9: Jenkins CI/CD Pipeline (`Jenkinsfile` multi-stage build, deployment, and test automation)
+
+---
+
 *Last updated: 2026-10-12*

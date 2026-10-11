@@ -230,6 +230,8 @@ export default function Home() {
             {notices.map((notice) => (
               <div 
                 key={notice.id}
+                data-testid="home-notice-item"
+                className="home-notice-card"
                 style={{
                   display: 'flex',
                   alignItems: 'center',

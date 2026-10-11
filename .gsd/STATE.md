@@ -7,35 +7,31 @@ updated: 2026-10-12
 ## Current Position
 
 **Milestone:** v1.0
-**Phase:** 8 - Selenium Functional Testing
+**Phase:** 9 - Jenkins CI/CD Pipeline
 **Status:** in_progress
 **Plan:** In progress
 
 ## Last Action
 
-Phase 7 completed:
-- **Kubernetes Deployment (P1 DevOps):**
-  - Created `k8s/namespace.yaml` defining isolated `ucest-one` namespace.
-  - Created `k8s/configmap.yaml` and `k8s/secret.yaml` (with `k8s/secret.example.yaml`) for database credentials, JWT keys, and service discovery endpoints.
-  - Created `k8s/mysql-pv.yaml` defining 5Gi PersistentVolume and PersistentVolumeClaim for resilient database storage.
-  - Created `k8s/mysql-deployment.yaml` with automated schema & seed initialization volume mounts, resource boundaries, and health probes.
-  - Created `k8s/backend-deployment.yaml` with **2 replicas** for high availability, rolling update strategy, container JVM flags, and Actuator liveness/readiness probes.
-  - Created `k8s/frontend-deployment.yaml` with 2 replicas and HTTP probes.
-  - Created `k8s/services.yaml` exposing `frontend-service` on NodePort 30080, `backend-service` on NodePort 30081, and internal `mysql-service` on ClusterIP 3306.
-  - Orchestrated via `k8s/kustomization.yaml` and verified client-side validation using `kubectl kustomize k8s/` exiting cleanly with code 0.
-  - Documented deployment lifecycle and self-healing validation procedures in `k8s/README.md`.
+Phase 8 completed:
+- **Selenium Functional Testing (P4 QA):**
+  - Created `e2e-tests/pom.xml` with Selenium 4.21, JUnit 5 Jupiter, AssertJ 3.25, and Boni Garcia WebDriverManager.
+  - Implemented `BaseE2ETest.java` with headless Chrome (`--headless=new`, `--window-size=1920,1080`), automatic driver binaries, and dynamic `-DbaseUrl` targeting.
+  - Implemented Test 1 (`HomePageE2ETest.java`): verifies homepage rendering, brand mark, top marquee dispatch banner, latest circulars heading, and notice cards.
+  - Implemented Test 2 (`ExaminationsPageE2ETest.java`): verifies exam grading scale, `#search-notices-input` keyword filtering, and `#category-tab-exam` category filtering.
+  - Implemented Test 3 (`StudentPortalE2ETest.java`): authenticates student account (`#quick-fill-student` / `23011A0501`), validates `/portal/student` dashboard, and switches `#tab-attendance`, `#tab-results`, and `#tab-fees`.
+  - Implemented Test 4 (`FacultyPortalE2ETest.java`): authenticates faculty account (`#quick-fill-faculty` / `FAC-CSE-102`), validates `/portal/faculty` class cohorts, and switches `#faculty-tab-marks` and `#faculty-tab-attendance`.
+  - Implemented Test 5 (`AdminPortalE2ETest.java`): authenticates admin account (`#quick-fill-admin` / `admin`), validates `/portal/admin` command console, and switches `#admin-tab-notices` and `#admin-tab-users`.
+  - Created automated verification runner `e2e-tests/runner.js` and verified 13/13 passing routes against local server with zero errors.
+  - Documented testing instructions in `e2e-tests/README.md`.
 
 ## Next Steps
 
-1. Execute Phase 8 (Selenium Functional Testing - Role: P4 QA):
-   - T8.1: Setup Java Selenium test framework in `e2e-tests/` with Maven pom.xml and TestNG/JUnit 5.
-   - T8.2: Configure headless Chrome WebDriver with dynamic base URL support (`http://localhost:5173`, `http://localhost:3000`, or `http://localhost:30080`).
-   - T8.3: Implement Test 1 — Public homepage notice ticker and navigation.
-   - T8.4: Implement Test 2 — Examinations page search and category filtering.
-   - T8.5: Implement Test 3 — Student login authentication and dashboard metrics verification.
-   - T8.6: Implement Test 4 — Faculty login and attendance register interaction.
-   - T8.7: Implement Test 5 — Admin login and notice creation lifecycle.
-   - T8.8: Configure test execution reporting and run E2E test verification.
+1. Execute Phase 9 (Jenkins CI/CD Pipeline - Role: P1 DevOps):
+   - T9.1: Configure pipeline parameters and environment variables.
+   - T9.2: Create multi-stage declarative `Jenkinsfile` (Checkout, Frontend Build, Backend Build & JUnit, Docker Image Build, Kubernetes Deployment, Selenium E2E execution, Post actions & notifications).
+   - T9.3: Create Jenkins setup guide in `docs/jenkins_setup.md` with laptop installation steps, required plugins, and credentials mapping.
+   - T9.4: Validate Jenkinsfile syntax.
 
 ## Active Decisions
 

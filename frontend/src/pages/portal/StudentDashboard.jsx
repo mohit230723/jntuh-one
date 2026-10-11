@@ -128,6 +128,8 @@ export default function StudentDashboard() {
           return (
             <button
               key={t.id}
+              id={`tab-${t.id}`}
+              data-testid={`tab-${t.id}`}
               onClick={() => setActiveTab(t.id)}
               style={{
                 display: 'flex',

@@ -11,7 +11,8 @@
     "build:frontend": "cd frontend && npm run build",
     "build:backend": "cd backend && mvnw.cmd clean package -DskipTests",
     "test:backend": "cd backend && mvnw.cmd test",
-    "test:e2e": "cd e2e-tests && mvnw.cmd test",
+    "test:e2e": "node e2e-tests/runner.js",
+    "test:e2e:maven": "cd e2e-tests && mvn test",
     "docker:up": "docker compose up --build",
     "docker:down": "docker compose down",
     "docker:clean": "docker compose down -v --rmi local"

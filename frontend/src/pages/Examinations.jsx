@@ -114,6 +114,8 @@ export default function Examinations() {
               <div style={{ position: 'relative', width: '260px' }}>
                 <Search size={16} style={{ position: 'absolute', left: '12px', top: '16px', color: 'var(--color-slate-600)' }} />
                 <input
+                  id="search-notices-input"
+                  data-testid="search-notices-input"
                   type="text"
                   placeholder="Search notices..."
                   value={search}
@@ -128,6 +130,8 @@ export default function Examinations() {
                 {categories.map((c) => (
                   <button
                     key={c}
+                    id={`category-tab-${c.toLowerCase()}`}
+                    data-testid={`category-tab-${c.toLowerCase()}`}
                     onClick={() => setCategory(c)}
                     style={{
                       background: category === c ? 'var(--color-carbon)' : 'var(--color-paper)',

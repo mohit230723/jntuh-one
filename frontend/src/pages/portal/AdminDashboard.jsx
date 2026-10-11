@@ -163,6 +163,8 @@ export default function AdminDashboard() {
         marginBottom: '28px'
       }}>
         <button
+          id="admin-tab-overview"
+          data-testid="admin-tab-overview"
           onClick={() => setActiveTab('overview')}
           style={{
             display: 'flex',
@@ -181,6 +183,8 @@ export default function AdminDashboard() {
           <BarChart3 size={16} /> Overview & Metrics
         </button>
         <button
+          id="admin-tab-notices"
+          data-testid="admin-tab-notices"
           onClick={() => setActiveTab('notices')}
           style={{
             display: 'flex',
@@ -199,6 +203,8 @@ export default function AdminDashboard() {
           <Bell size={16} /> Notice Management ({notices.length})
         </button>
         <button
+          id="admin-tab-users"
+          data-testid="admin-tab-users"
           onClick={() => setActiveTab('users')}
           style={{
             display: 'flex',

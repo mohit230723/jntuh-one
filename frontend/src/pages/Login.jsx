@@ -113,6 +113,8 @@ export default function Login() {
               </label>
               <div style={{ position: 'relative' }}>
                 <input
+                  id="username-input"
+                  data-testid="username-input"
                   type="text"
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
@@ -129,6 +131,8 @@ export default function Login() {
               </label>
               <div style={{ position: 'relative' }}>
                 <input
+                  id="password-input"
+                  data-testid="password-input"
                   type="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
@@ -140,6 +144,8 @@ export default function Login() {
             </div>
 
             <button
+              id="login-submit-btn"
+              data-testid="login-submit-btn"
               type="submit"
               disabled={submitting}
               className="btn-vermillion"
@@ -156,6 +162,8 @@ export default function Login() {
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
               <button
+                id="quick-fill-student"
+                data-testid="quick-fill-student"
                 type="button"
                 onClick={() => handleQuickFill('23011A0501', 'student123')}
                 style={{
@@ -174,6 +182,8 @@ export default function Login() {
               </button>
 
               <button
+                id="quick-fill-faculty"
+                data-testid="quick-fill-faculty"
                 type="button"
                 onClick={() => handleQuickFill('FAC-CSE-102', 'faculty123')}
                 style={{
@@ -192,6 +202,8 @@ export default function Login() {
               </button>
 
               <button
+                id="quick-fill-admin"
+                data-testid="quick-fill-admin"
                 type="button"
                 onClick={() => handleQuickFill('admin', 'admin123')}
                 style={{

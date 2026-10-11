@@ -187,6 +187,8 @@ export default function FacultyDashboard() {
       {/* Mode Sub-Tabs: Attendance vs Marks Entry */}
       <div style={{ display: 'flex', gap: '8px', marginBottom: '24px' }}>
         <button
+          id="faculty-tab-attendance"
+          data-testid="faculty-tab-attendance"
           onClick={() => setActiveTab('attendance')}
           style={{
             padding: '10px 18px',
@@ -205,6 +207,8 @@ export default function FacultyDashboard() {
           <CheckCircle size={16} /> Mark Class Attendance
         </button>
         <button
+          id="faculty-tab-marks"
+          data-testid="faculty-tab-marks"
           onClick={() => setActiveTab('marks')}
           style={{
             padding: '10px 18px',
