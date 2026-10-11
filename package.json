@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "description": "UCEST One — Unified university website and student portal for JNTUH UCEST",
+  "type": "module",
   "scripts": {
     "dev": "npm run dev:frontend",
     "dev:frontend": "cd frontend && npm run dev",
