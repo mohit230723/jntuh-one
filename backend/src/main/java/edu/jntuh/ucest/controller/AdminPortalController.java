@@ -68,7 +68,7 @@ public class AdminPortalController {
     }
 
     @PostMapping("/notices")
-    public ResponseEntity<Notice> createNotice(@Valid @RequestBody NoticeCreateRequest request) {
+    public ResponseEntity<NoticeDto> createNotice(@Valid @RequestBody NoticeCreateRequest request) {
         Notice notice = new Notice();
         notice.setTitle(request.getTitle());
         notice.setCategory(request.getCategory().toUpperCase());
@@ -79,11 +79,11 @@ public class AdminPortalController {
         notice.setArchived(false);
 
         Notice saved = noticeRepository.save(notice);
-        return ResponseEntity.status(HttpStatus.CREATED).body(saved);
+        return ResponseEntity.status(HttpStatus.CREATED).body(NoticeDto.from(saved));
     }
 
     @PutMapping("/notices/{id}")
-    public ResponseEntity<Notice> updateNotice(@PathVariable Long id, @RequestBody NoticeCreateRequest request) {
+    public ResponseEntity<NoticeDto> updateNotice(@PathVariable Long id, @RequestBody NoticeCreateRequest request) {
         return noticeRepository.findById(id).map(notice -> {
             if (request.getTitle() != null) notice.setTitle(request.getTitle());
             if (request.getCategory() != null) notice.setCategory(request.getCategory().toUpperCase());
@@ -91,7 +91,7 @@ public class AdminPortalController {
             notice.setPinned(request.isPinned());
             if (request.getAuthor() != null) notice.setAuthorName(request.getAuthor());
             Notice updated = noticeRepository.save(notice);
-            return ResponseEntity.ok(updated);
+            return ResponseEntity.ok(NoticeDto.from(updated));
         }).orElse(ResponseEntity.notFound().build());
     }
 
