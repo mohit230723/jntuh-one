@@ -1,0 +1,30 @@
+{
+  "name": "ucest-one",
+  "version": "1.0.0",
+  "private": true,
+  "description": "UCEST One — Unified university website and student portal for JNTUH UCEST",
+  "type": "module",
+  "scripts": {
+    "dev": "npm run dev:frontend",
+    "dev:frontend": "cd frontend && npm run dev",
+    "dev:full": "concurrently --names \"FRONTEND,BACKEND\" --prefix-colors \"cyan,yellow\" \"npm run dev:frontend\" \"npm run dev:backend\"",
+    "dev:backend": "cd backend && mvnw.cmd spring-boot:run",
+    "build:frontend": "cd frontend && npm run build",
+    "build:backend": "cd backend && mvnw.cmd clean package -DskipTests",
+    "test:backend": "cd backend && mvnw.cmd test",
+    "test:e2e": "node e2e-tests/runner.js",
+    "test:e2e:maven": "cd e2e-tests && mvn test",
+    "docker:up": "docker compose up --build",
+    "docker:down": "docker compose down",
+    "docker:clean": "docker compose down -v --rmi local"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mohit230723/jntuh-one.git"
+  },
+  "author": "mohit230723",
+  "license": "MIT"
+}

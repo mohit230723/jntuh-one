@@ -1,0 +1,58 @@
+# MySQL Internal Cluster Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql-service
+  namespace: ucest-one
+  labels:
+    app: mysql
+    app.kubernetes.io/name: ucest-one
+    app.kubernetes.io/component: database
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3306
+      targetPort: 3306
+      name: mysql
+  selector:
+    app: mysql
+---
+# Backend Service (NodePort 30081 for direct API access / verification)
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+  namespace: ucest-one
+  labels:
+    app: backend
+    app.kubernetes.io/name: ucest-one
+    app.kubernetes.io/component: backend
+spec:
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 8080
+      nodePort: 30081
+      name: http
+  selector:
+    app: backend
+---
+# Frontend Service (NodePort 30080 for browser access)
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  namespace: ucest-one
+  labels:
+    app: frontend
+    app.kubernetes.io/name: ucest-one
+    app.kubernetes.io/component: frontend
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30080
+      name: http
+  selector:
+    app: frontend
