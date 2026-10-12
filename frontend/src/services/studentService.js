@@ -1,4 +1,5 @@
 import api from './api';
+import { mockOr } from './mock';
 
 const MOCK_STUDENT_DASHBOARD = {
   rollNumber: '23011A0501',
@@ -169,7 +170,7 @@ export const studentService = {
       const response = await api.get('/student/dashboard');
       return response.data;
     } catch (err) {
-      return MOCK_STUDENT_DASHBOARD;
+      return mockOr(err, MOCK_STUDENT_DASHBOARD);
     }
   },
 
@@ -178,7 +179,7 @@ export const studentService = {
       const response = await api.get('/student/attendance');
       return response.data;
     } catch (err) {
-      return MOCK_ATTENDANCE;
+      return mockOr(err, MOCK_ATTENDANCE);
     }
   },
 
@@ -187,7 +188,7 @@ export const studentService = {
       const response = await api.get('/student/results', { params: { semester } });
       return response.data;
     } catch (err) {
-      return MOCK_RESULTS;
+      return mockOr(err, MOCK_RESULTS);
     }
   },
 
@@ -196,7 +197,7 @@ export const studentService = {
       const response = await api.get('/student/timetable');
       return response.data;
     } catch (err) {
-      return MOCK_TIMETABLE;
+      return mockOr(err, MOCK_TIMETABLE);
     }
   },
 
@@ -205,7 +206,7 @@ export const studentService = {
       const response = await api.get('/student/fees');
       return response.data;
     } catch (err) {
-      return MOCK_FEES;
+      return mockOr(err, MOCK_FEES);
     }
   },
 
@@ -214,18 +215,20 @@ export const studentService = {
       const response = await api.post('/student/fees/pay', data);
       return response.data;
     } catch (err) {
-      const newTx = {
-        receiptNo: `UCEST-2026-FEE-${Math.floor(1000 + Math.random() * 9000)}`,
-        amount: data.amount || 35000,
-        paymentDate: new Date().toISOString().split('T')[0],
-        mode: data.paymentMode || 'ONLINE',
-        status: 'SUCCESS'
-      };
-      MOCK_FEES.amountPaid = Number(MOCK_FEES.amountPaid) + Number(newTx.amount);
-      MOCK_FEES.pendingDue = Math.max(0, Number(MOCK_FEES.totalAcademicFee) - Number(MOCK_FEES.amountPaid));
-      MOCK_FEES.status = MOCK_FEES.pendingDue === 0 ? 'PAID' : 'PARTIAL';
-      MOCK_FEES.transactions.unshift(newTx);
-      return { ...MOCK_FEES };
+      return mockOr(err, () => {
+        const newTx = {
+          receiptNo: `UCEST-2026-FEE-${Math.floor(1000 + Math.random() * 9000)}`,
+          amount: data.amount || 35000,
+          paymentDate: new Date().toISOString().split('T')[0],
+          mode: data.paymentMode || 'ONLINE',
+          status: 'SUCCESS'
+        };
+        MOCK_FEES.amountPaid = Number(MOCK_FEES.amountPaid) + Number(newTx.amount);
+        MOCK_FEES.pendingDue = Math.max(0, Number(MOCK_FEES.totalAcademicFee) - Number(MOCK_FEES.amountPaid));
+        MOCK_FEES.status = MOCK_FEES.pendingDue === 0 ? 'PAID' : 'PARTIAL';
+        MOCK_FEES.transactions.unshift(newTx);
+        return { ...MOCK_FEES };
+      });
     }
   }
 };

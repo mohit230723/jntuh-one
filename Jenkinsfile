@@ -1,135 +1,102 @@
+// UCEST One — CI/CD pipeline (Jenkins on Windows, so every step uses `bat`).
+// Rule: no `|| true`, `|| exit /b 0` or fallback commands. If a command fails,
+// the stage fails and the build goes red.
 pipeline {
     agent any
 
     parameters {
-        booleanParam(name: 'DEPLOY_K8S', defaultValue: true, description: 'Deploy to local Kubernetes cluster')
-        booleanParam(name: 'RUN_E2E', defaultValue: true, description: 'Run Selenium E2E automated test suite')
-        string(name: 'TEST_BASE_URL', defaultValue: 'http://localhost:30080', description: 'Target base URL for Selenium tests')
+        booleanParam(name: 'DEPLOY_K8S', defaultValue: true, description: 'Deploy to the Docker Desktop Kubernetes cluster')
+        booleanParam(name: 'RUN_E2E', defaultValue: true, description: 'Run the Selenium E2E suite against the deployed site')
+        string(name: 'TEST_BASE_URL', defaultValue: 'http://localhost:30080', description: 'URL the Selenium tests open')
     }
 
     environment {
-        PROJECT_NAME = 'ucest-one'
-        BACKEND_IMAGE = "ucest-backend:${BUILD_NUMBER}"
+        BACKEND_IMAGE  = "ucest-backend:${BUILD_NUMBER}"
         FRONTEND_IMAGE = "ucest-frontend:${BUILD_NUMBER}"
-        BACKEND_LATEST = 'ucest-backend:latest'
-        FRONTEND_LATEST = 'ucest-frontend:latest'
+        K8S_NAMESPACE  = 'ucest-one'
+    }
+
+    options {
+        disableConcurrentBuilds()
     }
 
     stages {
-        stage('1. Checkout SCM') {
+        stage('Checkout') {
             steps {
-                echo "=== Stage 1: Checking out repository ==="
                 checkout scm
-                script {
-                    if (isUnix()) {
-                        sh 'git log -1 --oneline'
-                    } else {
-                        bat 'git log -1 --oneline'
-                    }
-                }
+                bat 'git log -1 --oneline'
             }
         }
 
-        stage('2. Build Frontend (React / Vite)') {
+        stage('Backend: build + JUnit') {
             steps {
-                echo "=== Stage 2: Compiling React 18 Orderful UI Bundle ==="
-                dir('frontend') {
-                    script {
-                        if (isUnix()) {
-                            sh 'npm install'
-                            sh 'npm run build'
-                        } else {
-                            bat 'npm install'
-                            bat 'npm run build'
-                        }
-                    }
-                }
-            }
-        }
-
-        stage('3. Build & Test Backend (Spring Boot 3)') {
-            steps {
-                echo "=== Stage 3: Compiling Spring Boot 3 Backend & Executing JUnit Tests ==="
                 dir('backend') {
-                    script {
-                        if (isUnix()) {
-                            sh 'chmod +x mvnw || true'
-                            sh './mvnw clean test package || mvn clean test package'
-                        } else {
-                            bat 'mvnw.cmd clean test package || mvn clean test package'
-                        }
-                    }
+                    bat 'mvn -B clean verify'
+                }
+            }
+            post {
+                always {
+                    junit testResults: 'backend/target/surefire-reports/*.xml', allowEmptyResults: false
                 }
             }
         }
 
-        stage('4. Docker Container Image Build') {
+        stage('Frontend: build') {
             steps {
-                echo "=== Stage 4: Building Multi-stage Docker Images ==="
-                script {
-                    if (isUnix()) {
-                        sh "docker build -t ${BACKEND_IMAGE} -t ${BACKEND_LATEST} ./backend"
-                        sh "docker build -t ${FRONTEND_IMAGE} -t ${FRONTEND_LATEST} ./frontend"
-                    } else {
-                        bat "docker build -t %BACKEND_IMAGE% -t %BACKEND_LATEST% ./backend"
-                        bat "docker build -t %FRONTEND_IMAGE% -t %FRONTEND_LATEST% ./frontend"
-                    }
+                dir('frontend') {
+                    bat 'npm ci'
+                    bat 'npm run build'
                 }
             }
         }
 
-        stage('5. Kubernetes Deployment') {
-            when {
-                expression { return params.DEPLOY_K8S }
-            }
+        stage('Docker images') {
             steps {
-                echo "=== Stage 5: Applying Kubernetes Manifests via Kustomize ==="
-                script {
-                    if (isUnix()) {
-                        sh 'kubectl apply -k k8s/'
-                        sh 'kubectl rollout status deployment/backend-deployment -n ucest-one --timeout=120s || true'
-                        sh 'kubectl rollout status deployment/frontend-deployment -n ucest-one --timeout=120s || true'
-                    } else {
-                        bat 'kubectl apply -k k8s/'
-                        bat 'kubectl rollout status deployment/backend-deployment -n ucest-one --timeout=120s || exit /b 0'
-                        bat 'kubectl rollout status deployment/frontend-deployment -n ucest-one --timeout=120s || exit /b 0'
-                    }
-                }
+                bat "docker build -t ${BACKEND_IMAGE} -t ucest-backend:latest ./backend"
+                bat "docker build -t ${FRONTEND_IMAGE} -t ucest-frontend:latest ./frontend"
             }
         }
 
-        stage('6. Selenium E2E Functional Tests') {
-            when {
-                expression { return params.RUN_E2E }
-            }
+        stage('Deploy to Kubernetes') {
+            when { expression { params.DEPLOY_K8S } }
             steps {
-                echo "=== Stage 6: Running Headless Selenium End-to-End Tests against ${params.TEST_BASE_URL} ==="
-                script {
-                    if (isUnix()) {
-                        sh "node e2e-tests/runner.js || cd e2e-tests && mvn test -DbaseUrl=${params.TEST_BASE_URL}"
-                    } else {
-                        bat "node e2e-tests/runner.js || (cd e2e-tests && mvn test -DbaseUrl=%TEST_BASE_URL%)"
-                    }
+                // secret.yaml is not in Git: it is stored in Jenkins as a "Secret file" credential.
+                withCredentials([file(credentialsId: 'ucest-k8s-secret', variable: 'K8S_SECRET_FILE')]) {
+                    bat 'kubectl apply -f k8s/namespace.yaml'
+                    bat 'kubectl apply -f "%K8S_SECRET_FILE%"'
+                }
+                bat 'kubectl apply -k k8s/'
+                // Point the deployments at this build's images, which triggers a rolling update.
+                bat "kubectl set image deployment/backend-deployment backend=${BACKEND_IMAGE} -n ${K8S_NAMESPACE}"
+                bat "kubectl set image deployment/frontend-deployment frontend=${FRONTEND_IMAGE} -n ${K8S_NAMESPACE}"
+                bat "kubectl rollout status deployment/backend-deployment -n ${K8S_NAMESPACE} --timeout=180s"
+                bat "kubectl rollout status deployment/frontend-deployment -n ${K8S_NAMESPACE} --timeout=120s"
+                bat "kubectl get pods -n ${K8S_NAMESPACE} -o wide"
+            }
+        }
+
+        stage('Selenium E2E') {
+            when { expression { params.RUN_E2E } }
+            steps {
+                dir('e2e-tests') {
+                    bat "mvn -B test -DbaseUrl=${params.TEST_BASE_URL}"
+                }
+            }
+            post {
+                always {
+                    junit testResults: 'e2e-tests/target/surefire-reports/*.xml', allowEmptyResults: false
                 }
             }
         }
     }
 
     post {
-        always {
-            echo "=== Publishing Test Results & JUnit Reports ==="
-            junit testResults: '**/target/surefire-reports/*.xml', allowEmptyResults: true
-        }
         success {
-            echo "================================================================="
-            echo "🎉 Pipeline Succeeded! UCEST One build #${BUILD_NUMBER} verified."
-            echo "================================================================="
-            archiveArtifacts artifacts: 'backend/target/*.jar, frontend/dist/**', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'backend/target/*.jar', fingerprint: true
+            echo "Build #${BUILD_NUMBER} passed: tested, packaged and deployed."
         }
         failure {
-            echo "================================================================="
-            echo "❌ Pipeline Failed! Please check stage console logs for errors."
-            echo "================================================================="
+            echo "Build #${BUILD_NUMBER} FAILED. Open the red stage above to see why."
         }
     }
 }

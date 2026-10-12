@@ -133,8 +133,8 @@ Pre-seeded credentials with BCrypt hashes ready for login:
 | Role | Username | Password | Access Scope |
 |------|----------|----------|--------------|
 | **Admin** | `admin` | `admin123` | Institutional overview, Notice publishing & archiving, User provisioning |
-| **Student** | `22011A0501` | `student123` | Personal dashboard, Attendance ledger, Grade cards, Timetable, Fee mock payments |
-| **Faculty** | `fac_cs101` | `faculty123` | Assigned classes, Student rosters, Interactive attendance register, Marks entry |
+| **Student** | `23011A0501` | `student123` | Personal dashboard, Attendance ledger, Grade cards, Timetable, Fee mock payments |
+| **Faculty** | `FAC-CSE-102` | `faculty123` | Assigned classes, Student rosters, Interactive attendance register, Marks entry |
 
 > 💡 *Quick-Fill presets are also provided directly on the `/login` screen for one-click access.*
 

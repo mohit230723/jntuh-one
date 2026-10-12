@@ -2,6 +2,7 @@ package edu.jntuh.ucest.controller;
 
 import edu.jntuh.ucest.dto.AdminStatsDto;
 import edu.jntuh.ucest.dto.NoticeCreateRequest;
+import edu.jntuh.ucest.dto.NoticeDto;
 import edu.jntuh.ucest.dto.UserCreationRequest;
 import edu.jntuh.ucest.model.*;
 import edu.jntuh.ucest.repository.*;
@@ -75,7 +76,7 @@ public class AdminPortalControllerTest {
         mockSaved.setCategory("EVENTS");
         when(noticeRepository.save(any(Notice.class))).thenReturn(mockSaved);
 
-        ResponseEntity<Notice> response = adminPortalController.createNotice(req);
+        ResponseEntity<NoticeDto> response = adminPortalController.createNotice(req);
 
         assertEquals(201, response.getStatusCode().value());
         assertNotNull(response.getBody());
