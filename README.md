@@ -1,6 +1,7 @@
 # UCEST One
 
 > Unified university website and student portal for JNTUH UCEST.
+> built for Devops presentation 
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Guide: Comprehensive](https://img.shields.io/badge/Guide-PROJECT__GUIDE.md-orange.svg)](PROJECT_GUIDE.md)
