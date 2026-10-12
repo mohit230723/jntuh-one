@@ -43,24 +43,24 @@ INSERT INTO `departments` (`id`, `code`, `name`, `established_year`, `hod_name`,
 
 -- =====================================================================
 -- 2. USERS: ADMIN (User ID 1)
--- Default Password: admin123 ($2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y)
+-- Default Password: admin123 ($2a$10$gtKDR0oUA7YEjcea5MZOweTFJMzd0GyE0KsJpsb3/.wBB02IaeqYy)
 -- =====================================================================
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `is_active`) VALUES
-(1, 'admin', 'admin@ucest.edu', '$2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y', 'ROLE_ADMIN', TRUE);
+(1, 'admin', 'admin@ucest.edu', '$2a$10$gtKDR0oUA7YEjcea5MZOweTFJMzd0GyE0KsJpsb3/.wBB02IaeqYy', 'ROLE_ADMIN', TRUE);
 
 -- =====================================================================
 -- 3. USERS & FACULTY PROFILES (User IDs 2 to 9, Faculty IDs 1 to 8)
--- Default Password: faculty123 ($2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y)
+-- Default Password: faculty123 ($2a$10$iiDbCocSZ.mOl9QXOInUy.urNSPCa2LjCGUdGHioT7azMHciGYJIS)
 -- =====================================================================
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `is_active`) VALUES
-(2, 'FAC-CSE-101', 'kavitha.cse@jntuh.ac.in', '$2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y', 'ROLE_FACULTY', TRUE),
-(3, 'FAC-CSE-102', 'vijaykumar.cse@jntuh.ac.in', '$2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y', 'ROLE_FACULTY', TRUE),
-(4, 'FAC-CSE-103', 'gvr.cse@jntuh.ac.in', '$2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y', 'ROLE_FACULTY', TRUE),
-(5, 'FAC-CSE-104', 'radhika.cse@jntuh.ac.in', '$2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y', 'ROLE_FACULTY', TRUE),
-(6, 'FAC-CSE-105', 'sateesh.cse@jntuh.ac.in', '$2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y', 'ROLE_FACULTY', TRUE),
-(7, 'FAC-CSE-106', 'sammulal.cse@jntuh.ac.in', '$2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y', 'ROLE_FACULTY', TRUE),
-(8, 'FAC-CSE-107', 'ramesh.cse@jntuh.ac.in', '$2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y', 'ROLE_FACULTY', TRUE),
-(9, 'FAC-CSE-108', 'anitha.cse@jntuh.ac.in', '$2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y', 'ROLE_FACULTY', TRUE);
+(2, 'FAC-CSE-101', 'kavitha.cse@jntuh.ac.in', '$2a$10$iiDbCocSZ.mOl9QXOInUy.urNSPCa2LjCGUdGHioT7azMHciGYJIS', 'ROLE_FACULTY', TRUE),
+(3, 'FAC-CSE-102', 'vijaykumar.cse@jntuh.ac.in', '$2a$10$iiDbCocSZ.mOl9QXOInUy.urNSPCa2LjCGUdGHioT7azMHciGYJIS', 'ROLE_FACULTY', TRUE),
+(4, 'FAC-CSE-103', 'gvr.cse@jntuh.ac.in', '$2a$10$iiDbCocSZ.mOl9QXOInUy.urNSPCa2LjCGUdGHioT7azMHciGYJIS', 'ROLE_FACULTY', TRUE),
+(5, 'FAC-CSE-104', 'radhika.cse@jntuh.ac.in', '$2a$10$iiDbCocSZ.mOl9QXOInUy.urNSPCa2LjCGUdGHioT7azMHciGYJIS', 'ROLE_FACULTY', TRUE),
+(6, 'FAC-CSE-105', 'sateesh.cse@jntuh.ac.in', '$2a$10$iiDbCocSZ.mOl9QXOInUy.urNSPCa2LjCGUdGHioT7azMHciGYJIS', 'ROLE_FACULTY', TRUE),
+(7, 'FAC-CSE-106', 'sammulal.cse@jntuh.ac.in', '$2a$10$iiDbCocSZ.mOl9QXOInUy.urNSPCa2LjCGUdGHioT7azMHciGYJIS', 'ROLE_FACULTY', TRUE),
+(8, 'FAC-CSE-107', 'ramesh.cse@jntuh.ac.in', '$2a$10$iiDbCocSZ.mOl9QXOInUy.urNSPCa2LjCGUdGHioT7azMHciGYJIS', 'ROLE_FACULTY', TRUE),
+(9, 'FAC-CSE-108', 'anitha.cse@jntuh.ac.in', '$2a$10$iiDbCocSZ.mOl9QXOInUy.urNSPCa2LjCGUdGHioT7azMHciGYJIS', 'ROLE_FACULTY', TRUE);
 
 INSERT INTO `faculty_profiles` (`id`, `user_id`, `department_id`, `faculty_code`, `full_name`, `designation`, `qualification`, `specialization`, `phone`, `office_room`) VALUES
 (1, 2, 1, 'FAC-CSE-101', 'Dr. A. Kavitha', 'Professor & HOD', 'Ph.D. (CSE)', 'Cloud Computing & Distributed Systems', '+91-40-23158671', 'CSE-HOD-101'),
@@ -124,24 +124,24 @@ INSERT INTO `timetables` (`department_id`, `semester`, `section`, `day_of_week`,
 
 -- =====================================================================
 -- 7. USERS & STUDENT PROFILES (60 Students: User IDs 10 to 69, Student IDs 1 to 60)
--- Default Password: student123 ($2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y)
+-- Default Password: student123 ($2a$10$csVUb8g.gAlE/phu09bMceNTfuWfsbPsFkRv35azRxf73R18za07i)
 -- =====================================================================
 INSERT INTO `users` (`id`, `username`, `email`, `password`, `role`, `is_active`) VALUES
-(10, '23011A0501', '23011a0501@ucest.edu', '$2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y', 'ROLE_STUDENT', TRUE),
-(11, '23011A0502', '23011a0502@ucest.edu', '$2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y', 'ROLE_STUDENT', TRUE),
-(12, '23011A0503', '23011a0503@ucest.edu', '$2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y', 'ROLE_STUDENT', TRUE),
-(13, '23011A0504', '23011a0504@ucest.edu', '$2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y', 'ROLE_STUDENT', TRUE),
-(14, '23011A0505', '23011a0505@ucest.edu', '$2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y', 'ROLE_STUDENT', TRUE),
-(15, '23011A0506', '23011a0506@ucest.edu', '$2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y', 'ROLE_STUDENT', TRUE),
-(16, '23011A0507', '23011a0507@ucest.edu', '$2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y', 'ROLE_STUDENT', TRUE),
-(17, '23011A0508', '23011a0508@ucest.edu', '$2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y', 'ROLE_STUDENT', TRUE),
-(18, '23011A0509', '23011a0509@ucest.edu', '$2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y', 'ROLE_STUDENT', TRUE),
-(19, '23011A0510', '23011a0510@ucest.edu', '$2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y', 'ROLE_STUDENT', TRUE),
-(20, '23011A0511', '23011a0511@ucest.edu', '$2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y', 'ROLE_STUDENT', TRUE),
-(21, '23011A0512', '23011a0512@ucest.edu', '$2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y', 'ROLE_STUDENT', TRUE),
-(22, '23011A0513', '23011a0513@ucest.edu', '$2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y', 'ROLE_STUDENT', TRUE),
-(23, '23011A0514', '23011a0514@ucest.edu', '$2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y', 'ROLE_STUDENT', TRUE),
-(24, '23011A0515', '23011a0515@ucest.edu', '$2a$10$eAccYoNOHEqgkHgk.z74ue.t8/nS6dG9oPZg5xZ2VbO7zXyYk7i2y', 'ROLE_STUDENT', TRUE);
+(10, '23011A0501', '23011a0501@ucest.edu', '$2a$10$csVUb8g.gAlE/phu09bMceNTfuWfsbPsFkRv35azRxf73R18za07i', 'ROLE_STUDENT', TRUE),
+(11, '23011A0502', '23011a0502@ucest.edu', '$2a$10$csVUb8g.gAlE/phu09bMceNTfuWfsbPsFkRv35azRxf73R18za07i', 'ROLE_STUDENT', TRUE),
+(12, '23011A0503', '23011a0503@ucest.edu', '$2a$10$csVUb8g.gAlE/phu09bMceNTfuWfsbPsFkRv35azRxf73R18za07i', 'ROLE_STUDENT', TRUE),
+(13, '23011A0504', '23011a0504@ucest.edu', '$2a$10$csVUb8g.gAlE/phu09bMceNTfuWfsbPsFkRv35azRxf73R18za07i', 'ROLE_STUDENT', TRUE),
+(14, '23011A0505', '23011a0505@ucest.edu', '$2a$10$csVUb8g.gAlE/phu09bMceNTfuWfsbPsFkRv35azRxf73R18za07i', 'ROLE_STUDENT', TRUE),
+(15, '23011A0506', '23011a0506@ucest.edu', '$2a$10$csVUb8g.gAlE/phu09bMceNTfuWfsbPsFkRv35azRxf73R18za07i', 'ROLE_STUDENT', TRUE),
+(16, '23011A0507', '23011a0507@ucest.edu', '$2a$10$csVUb8g.gAlE/phu09bMceNTfuWfsbPsFkRv35azRxf73R18za07i', 'ROLE_STUDENT', TRUE),
+(17, '23011A0508', '23011a0508@ucest.edu', '$2a$10$csVUb8g.gAlE/phu09bMceNTfuWfsbPsFkRv35azRxf73R18za07i', 'ROLE_STUDENT', TRUE),
+(18, '23011A0509', '23011a0509@ucest.edu', '$2a$10$csVUb8g.gAlE/phu09bMceNTfuWfsbPsFkRv35azRxf73R18za07i', 'ROLE_STUDENT', TRUE),
+(19, '23011A0510', '23011a0510@ucest.edu', '$2a$10$csVUb8g.gAlE/phu09bMceNTfuWfsbPsFkRv35azRxf73R18za07i', 'ROLE_STUDENT', TRUE),
+(20, '23011A0511', '23011a0511@ucest.edu', '$2a$10$csVUb8g.gAlE/phu09bMceNTfuWfsbPsFkRv35azRxf73R18za07i', 'ROLE_STUDENT', TRUE),
+(21, '23011A0512', '23011a0512@ucest.edu', '$2a$10$csVUb8g.gAlE/phu09bMceNTfuWfsbPsFkRv35azRxf73R18za07i', 'ROLE_STUDENT', TRUE),
+(22, '23011A0513', '23011a0513@ucest.edu', '$2a$10$csVUb8g.gAlE/phu09bMceNTfuWfsbPsFkRv35azRxf73R18za07i', 'ROLE_STUDENT', TRUE),
+(23, '23011A0514', '23011a0514@ucest.edu', '$2a$10$csVUb8g.gAlE/phu09bMceNTfuWfsbPsFkRv35azRxf73R18za07i', 'ROLE_STUDENT', TRUE),
+(24, '23011A0515', '23011a0515@ucest.edu', '$2a$10$csVUb8g.gAlE/phu09bMceNTfuWfsbPsFkRv35azRxf73R18za07i', 'ROLE_STUDENT', TRUE);
 
 -- Insert student profiles for key cohort members
 INSERT INTO `student_profiles` (`id`, `user_id`, `department_id`, `roll_number`, `full_name`, `batch`, `current_semester`, `section`, `gender`, `phone`, `parent_phone`) VALUES
