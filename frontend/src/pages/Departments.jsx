@@ -28,6 +28,8 @@ export default function Departments() {
 
         setDepartments(list);
       } catch (err) {
+        console.error('Failed to load departments', err);
+        setDepartments([]);
         setError(`Could not load departments. ${errorMessage(err)}`);
       } finally {
         setLoading(false);
