@@ -56,3 +56,21 @@ spec:
       name: http
   selector:
     app: frontend
+---
+# Internal alias: the frontend's nginx proxies /api to http://backend:8080 (same name as in
+# docker-compose), so this ClusterIP Service gives the backend pods that DNS name in Kubernetes.
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: ucest-one
+  labels:
+    app.kubernetes.io/name: ucest-one
+spec:
+  type: ClusterIP
+  selector:
+    app: backend
+  ports:
+    - port: 8080
+      targetPort: 8080
+      name: http
