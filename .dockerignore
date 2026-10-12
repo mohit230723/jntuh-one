@@ -1,0 +1,38 @@
+# Node dependencies and build output
+node_modules/
+**/node_modules/
+dist/
+**/dist/
+target/
+**/target/
+
+# Git and local tooling
+.git/
+.github/
+.vscode/
+.idea/
+.gsd/
+.agent/
+.agents/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+
+# Logs and test artifacts
+*.log
+e2e-tests/target/
+e2e-tests/test-output/
+
+# Documentation and non-runtime project assets
+docs/
+monitoring/
+k8s/
+adapters/
+
+# Docker files are intentionally included
+!docker-compose.yml
+!**/Dockerfile
+!**/nginx.conf
+!db/*.sql

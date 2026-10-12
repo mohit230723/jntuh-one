@@ -1,6 +1,9 @@
 # UCEST One
 
+https://jntuh-onev.vercel.app/
 > Unified university website and student portal for JNTUH UCEST.
+
+> Built as a part of Devops Assignment
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Guide: Comprehensive](https://img.shields.io/badge/Guide-PROJECT__GUIDE.md-orange.svg)](PROJECT_GUIDE.md)
@@ -144,3 +147,5 @@ Built as an engineering platform following the **Get Shit Done (GSD)** methodolo
 ## License
 
 MIT License. Designed and maintained for JNTUH UCEST.
+
+test

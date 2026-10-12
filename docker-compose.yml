@@ -1,76 +1,87 @@
-version: '3.8'
-
 services:
   db:
     image: mysql:8.0
     container_name: ucest-mysql
-    restart: always
+    restart: unless-stopped
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:-root}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?MYSQL_ROOT_PASSWORD is required}
       MYSQL_DATABASE: ${MYSQL_DATABASE:-ucest_one}
       MYSQL_USER: ${MYSQL_USER:-ucest_user}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD:-ucest_password}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD:?MYSQL_PASSWORD is required}
     ports:
-      - "3306:3306"
+      - "${MYSQL_PORT:-3306}:3306"
     volumes:
       - mysql_data:/var/lib/mysql
       - ./db/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
       - ./db/seed.sql:/docker-entrypoint-initdb.d/02-seed.sql:ro
-    networks:
-      ucest-network:
-        aliases:
-          - db
-          - mysql
+    networks: [ucest-network]
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -u root -p$${MYSQL_ROOT_PASSWORD} --silent"]
       interval: 10s
       timeout: 5s
-      retries: 6
-      start_period: 20s
+      retries: 12
+      start_period: 30s
+
+  phpmyadmin:
+    image: phpmyadmin:5-apache
+    container_name: ucest-phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: db
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?MYSQL_ROOT_PASSWORD is required}
+    ports:
+      - "${PHPMYADMIN_PORT:-8082}:80"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks: [ucest-network]
 
   backend:
     build:
       context: ./backend
       dockerfile: Dockerfile
+    image: ucest-one-backend:local
     container_name: ucest-backend
-    restart: always
+    restart: unless-stopped
     ports:
-      - "8080:8080"
+      - "${BACKEND_PORT:-8081}:8080"
     environment:
       SPRING_DATASOURCE_URL: ${SPRING_DATASOURCE_URL:-jdbc:mysql://db:3306/ucest_one?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC}
       SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME:-root}
-      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD:-root}
-      JWT_SECRET: ${JWT_SECRET:-UcestOneSecretKeyForJwtSigningMustBeAtLeast256BitsLong2026!}
+      SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD:?SPRING_DATASOURCE_PASSWORD is required}
+      JWT_SECRET: ${JWT_SECRET:?JWT_SECRET is required}
+      JWT_EXPIRATION: ${JWT_EXPIRATION:-7200000}
     depends_on:
       db:
         condition: service_healthy
-    networks:
-      - ucest-network
+    networks: [ucest-network]
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/actuator/health || exit 1"]
       interval: 15s
       timeout: 5s
-      retries: 5
-      start_period: 30s
+      retries: 8
+      start_period: 45s
 
   frontend:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+    image: ucest-one-frontend:local
     container_name: ucest-frontend
-    restart: always
+    restart: unless-stopped
     ports:
-      - "3000:80"
+      - "${FRONTEND_PORT:-3000}:80"
     depends_on:
       backend:
         condition: service_healthy
-    networks:
-      - ucest-network
+    networks: [ucest-network]
     healthcheck:
-      test: ["CMD-SHELL", "wget -q --spider http://localhost/ || exit 1"]
+      test: ["CMD-SHELL", "wget -q --spider http://127.0.0.1/ || exit 1"]
       interval: 20s
       timeout: 5s
-      retries: 3
+      retries: 5
+      start_period: 10s
 
 volumes:
   mysql_data:

@@ -1,32 +1,21 @@
-# Multi-stage Dockerfile for Spring Boot 3 Backend
-# Stage 1: Build artifact with Maven & OpenJDK 17
-FROM maven:3.9.6-eclipse-temurin-17-alpine AS build
+# syntax=docker/dockerfile:1.7
+FROM maven:3.9.9-eclipse-temurin-17-alpine AS dependencies
 WORKDIR /app
-
-# Cache dependencies layer
 COPY pom.xml .
-RUN mvn dependency:go-offline -B || true
+RUN --mount=type=cache,target=/root/.m2 mvn -B dependency:go-offline -DskipTests
 
-# Build application artifact
+FROM dependencies AS build
 COPY src ./src
-RUN mvn clean package -DskipTests
+RUN --mount=type=cache,target=/root/.m2 mvn -B clean package -DskipTests
 
-# Stage 2: Minimal production JRE runtime
-FROM eclipse-temurin:17-jre-alpine
+FROM eclipse-temurin:17-jre-alpine AS runtime
 WORKDIR /app
-
-# Install curl for health check probing
-RUN apk add --no-cache curl
-
-# Run as non-privileged service user
-RUN addgroup -S ucest && adduser -S ucest -G ucest
-USER ucest:ucest
-
-COPY --from=build --chown=ucest:ucest /app/target/*.jar app.jar
-
+RUN apk add --no-cache curl \
+    && addgroup -S ucest \
+    && adduser -S -G ucest ucest
+COPY --from=build --chown=ucest:ucest /app/target/*.jar /app/app.jar
+USER ucest
 EXPOSE 8080
-
-HEALTHCHECK --interval=15s --timeout=5s --start-period=30s --retries=3 \
-  CMD curl -f http://localhost:8080/actuator/health || exit 1
-
-ENTRYPOINT ["java", "-XX:+UseContainerSupport", "-XX:MaxRAMPercentage=75.0", "-jar", "app.jar"]
+HEALTHCHECK --interval=15s --timeout=5s --start-period=45s --retries=5 \
+  CMD curl -fsS http://localhost:8080/actuator/health || exit 1
+ENTRYPOINT ["java", "-XX:+UseContainerSupport", "-XX:MaxRAMPercentage=75.0", "-jar", "/app/app.jar"]
