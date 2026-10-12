@@ -75,8 +75,9 @@ export default function Login() {
       <div style={{ width: '100%', maxWidth: '440px' }}>
         {/* Card Header */}
         <div style={{ textAlign: 'center', marginBottom: '32px' }}>
+          <img src="/jntuh-logo.png" alt="JNTUH logo" width="84" height="91" style={{ margin: '0 auto 12px', display: 'block' }} />
           <div className="eyebrow-pill" style={{ marginBottom: '12px' }}>
-            AUTHENTICATED ACCESS CONTROL
+            ONE LOGIN FOR STUDENTS, FACULTY AND ADMIN
           </div>
           <h1 className="heading-lg" style={{ fontSize: '32px', marginBottom: '8px' }}>
             Portal Sign In

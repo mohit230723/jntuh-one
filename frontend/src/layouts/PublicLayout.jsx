@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { ArrowUpRight, Terminal, Menu, X } from 'lucide-react';
+import BrandLogo from '../components/BrandLogo';
 
 export default function PublicLayout() {
   const { user, isAuthenticated, logout } = useAuth();
@@ -84,7 +85,7 @@ export default function PublicLayout() {
               letterSpacing: '-0.5px',
               color: 'var(--color-ink-black)'
             }}>
-              UCEST ONE<span style={{ color: 'var(--color-vermillion-signal)', marginLeft: '1px' }}>*</span>
+              <BrandLogo size={40} subtitle={false} />
             </div>
           </Link>
 
@@ -199,7 +200,7 @@ export default function PublicLayout() {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '40px' }}>
             <div>
               <div style={{ fontWeight: 700, fontSize: '18px', color: 'var(--color-ink-black)', marginBottom: '8px' }}>
-                UCEST ONE<span style={{ color: 'var(--color-vermillion-signal)' }}>*</span>
+                <BrandLogo size={48} />
               </div>
               <p style={{ fontSize: '14px', color: 'var(--color-slate-600)', lineHeight: '1.6' }}>
                 JNTUH University College of Engineering, Science & Technology. Autonomous Constituent College, Hyderabad 500085.
@@ -258,7 +259,7 @@ export default function PublicLayout() {
             flexWrap: 'wrap',
             gap: '8px'
           }}>
-            <div>© 2026 JNTUH UCEST. All rights reserved. Orderful Command Deck Architecture.</div>
+            <div>© 2026 JNTUH UCEST. All rights reserved.</div>
             <div>Built for Engineering Excellence</div>
           </div>
         </div>

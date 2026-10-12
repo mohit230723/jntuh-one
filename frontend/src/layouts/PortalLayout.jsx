@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import BrandLogo from '../components/BrandLogo';
 import { 
   Home, 
   BookOpen, 
@@ -52,7 +53,7 @@ export default function PortalLayout() {
           borderBottom: '1px solid var(--color-frost)'
         }}>
           <Link to="/" style={{ display: 'flex', alignItems: 'center', fontWeight: 700, fontSize: '18px', color: 'var(--color-ink-black)' }}>
-            UCEST ONE<span style={{ color: 'var(--color-vermillion-signal)' }}>*</span>
+            <BrandLogo size={36} subtitle={false} />
           </Link>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
             <span style={{
@@ -185,7 +186,7 @@ function PortalNavItem({ to, icon, label, onClick }) {
         color: isActive ? 'var(--color-ink-black)' : 'var(--color-slate-600)',
         backgroundColor: isActive ? 'var(--color-vellum)' : 'transparent',
         borderRadius: 'var(--radius-universal)',
-        borderLeft: isActive ? '3px solid var(--color-vermillion-signal)' : '3px solid transparent',
+        borderLeft: isActive ? '3px solid var(--color-brand-magenta)' : '3px solid transparent',
         transition: 'all 0.15s ease'
       })}
     >
