@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight } from 'lucide-react';
 import { departmentService } from '../services/departmentService';
+import { errorMessage } from '../services/mock';
+import ErrorState from '../components/ErrorState';
 
 export default function Departments() {
   const [departments, setDepartments] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     async function loadDepts() {
@@ -25,8 +28,7 @@ export default function Departments() {
 
         setDepartments(list);
       } catch (err) {
-        console.error('Failed to load departments', err);
-        setDepartments([]);
+        setError(`Could not load departments. ${errorMessage(err)}`);
       } finally {
         setLoading(false);
       }
@@ -51,6 +53,8 @@ export default function Departments() {
           <div className="card-paper" style={{ padding: '32px', textAlign: 'center', color: 'var(--color-slate-600)' }}>
             Loading department roster...
           </div>
+        ) : error ? (
+          <ErrorState message={error} />
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '24px' }}>
             {Array.isArray(departments) && departments.length > 0 ? (
