@@ -27,7 +27,7 @@ public abstract class BaseE2ETest {
 
     @BeforeEach
     void setUp() {
-        baseUrl = System.getProperty("baseUrl", "http://localhost:5173");
+        baseUrl = System.getProperty("baseUrl", "http://localhost:30080");
         if (baseUrl.endsWith("/")) {
             baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
         }
@@ -77,5 +77,12 @@ public abstract class BaseE2ETest {
 
     protected String getElementText(By locator) {
         return waitForElement(locator).getText();
+    }
+    // Logs in through the real login form (quick-fill button + submit) and waits for the portal URL.
+    protected void loginWithQuickFill(String quickFillId, String expectedPath) {
+        navigateTo("/login");
+        click(By.id(quickFillId));
+        click(By.id("login-submit-btn"));
+        wait.until(d -> d.getCurrentUrl().contains(expectedPath));
     }
 }
