@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { FileText, Search, ArrowRight, X, Pin } from 'lucide-react';
 import { noticeService } from '../services/noticeService';
+import { errorMessage } from '../services/mock';
+import ErrorState from '../components/ErrorState';
 
 export default function Examinations() {
   const [category, setCategory] = useState('ALL');
   const [search, setSearch] = useState('');
   const [notices, setNotices] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
   const [selectedNotice, setSelectedNotice] = useState(null);
 
   useEffect(() => {
@@ -15,6 +18,7 @@ export default function Examinations() {
 
   const loadNotices = async () => {
     setLoading(true);
+    setError('');
     try {
       const data = await noticeService.getNotices({
         category: category !== 'ALL' ? category : undefined,
@@ -22,7 +26,8 @@ export default function Examinations() {
       });
       setNotices(data.content || data || []);
     } catch (err) {
-      console.error('Failed to load notices', err);
+      setNotices([]);
+      setError(`Could not load notices. ${errorMessage(err)}`);
     } finally {
       setLoading(false);
     }
@@ -156,6 +161,8 @@ export default function Examinations() {
             <div className="card-paper" style={{ padding: '32px', textAlign: 'center', color: 'var(--color-slate-600)' }}>
               Loading announcements...
             </div>
+          ) : error ? (
+            <ErrorState message={error} onRetry={loadNotices} />
           ) : notices.length === 0 ? (
             <div className="card-paper" style={{ padding: '32px', textAlign: 'center', color: 'var(--color-slate-600)' }}>
               No notices found matching "{search}" in category "{category}".
