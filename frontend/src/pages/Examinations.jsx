@@ -20,9 +20,23 @@ export default function Examinations() {
         category: category !== 'ALL' ? category : undefined,
         search: search.trim() || undefined
       });
-      setNotices(data.content || data || []);
+
+      // Safely extract the array no matter how the API formats the response
+      let list = [];
+      if (Array.isArray(data)) {
+        list = data;
+      } else if (data && Array.isArray(data.content)) {
+        list = data.content;
+      } else if (data && Array.isArray(data.notices)) {
+        list = data.notices;
+      } else if (data && Array.isArray(data.data)) {
+        list = data.data;
+      }
+
+      setNotices(list);
     } catch (err) {
       console.error('Failed to load notices', err);
+      setNotices([]);
     } finally {
       setLoading(false);
     }
@@ -156,15 +170,15 @@ export default function Examinations() {
             <div className="card-paper" style={{ padding: '32px', textAlign: 'center', color: 'var(--color-slate-600)' }}>
               Loading announcements...
             </div>
-          ) : notices.length === 0 ? (
+          ) : !Array.isArray(notices) || notices.length === 0 ? (
             <div className="card-paper" style={{ padding: '32px', textAlign: 'center', color: 'var(--color-slate-600)' }}>
               No notices found matching "{search}" in category "{category}".
             </div>
           ) : (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              {notices.map((n) => (
+              {Array.isArray(notices) && notices.map((n) => (
                 <div 
-                  key={n.id}
+                  key={n.id || Math.random()}
                   className="card-paper"
                   style={{
                     display: 'flex',
