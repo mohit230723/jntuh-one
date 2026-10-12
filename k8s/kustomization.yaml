@@ -3,10 +3,10 @@ kind: Kustomization
 
 namespace: ucest-one
 
+# secret.yaml is applied separately (it is not in Git), see secret.example.yaml
 resources:
   - namespace.yaml
   - configmap.yaml
-  - secret.yaml
   - mysql-pv.yaml
   - mysql-deployment.yaml
   - backend-deployment.yaml
