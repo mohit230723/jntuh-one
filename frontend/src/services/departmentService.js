@@ -1,4 +1,5 @@
 import api from './api';
+import { mockOr } from './mock';
 
 const MOCK_DEPARTMENTS = [
   {
@@ -75,7 +76,7 @@ export const departmentService = {
       const response = await api.get('/public/departments');
       return response.data;
     } catch (err) {
-      return MOCK_DEPARTMENTS;
+      return mockOr(err, MOCK_DEPARTMENTS);
     }
   },
 
@@ -84,7 +85,7 @@ export const departmentService = {
       const response = await api.get(`/public/departments/${code}`);
       return response.data;
     } catch (err) {
-      return MOCK_DEPARTMENTS.find(d => d.code.toLowerCase() === code.toLowerCase()) || MOCK_DEPARTMENTS[0];
+      return mockOr(err, () => MOCK_DEPARTMENTS.find(d => d.code.toLowerCase() === code.toLowerCase()) || MOCK_DEPARTMENTS[0]);
     }
   }
 };

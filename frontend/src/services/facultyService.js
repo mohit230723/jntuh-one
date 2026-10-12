@@ -1,4 +1,5 @@
 import api from './api';
+import { mockOr } from './mock';
 
 const MOCK_CLASSES = [
   { courseCode: 'CS501PC', courseName: 'Database Management Systems', semester: 5, section: 'A', totalStudents: 60 },
@@ -25,7 +26,7 @@ export const facultyService = {
       const response = await api.get('/faculty/classes');
       return response.data;
     } catch (err) {
-      return MOCK_CLASSES;
+      return mockOr(err, MOCK_CLASSES);
     }
   },
 
@@ -34,7 +35,7 @@ export const facultyService = {
       const response = await api.get(`/faculty/classes/${courseCode}/students`);
       return response.data;
     } catch (err) {
-      return MOCK_STUDENTS;
+      return mockOr(err, MOCK_STUDENTS);
     }
   },
 
@@ -43,15 +44,17 @@ export const facultyService = {
       const response = await api.post('/faculty/attendance', data);
       return response.data;
     } catch (err) {
-      const present = data.attendanceList ? data.attendanceList.filter(s => s.present).length : 54;
-      const absent = data.attendanceList ? data.attendanceList.filter(s => !s.present).length : 6;
-      return {
-        status: 'SUCCESS',
-        recordedCount: data.attendanceList ? data.attendanceList.length : 60,
-        presentCount: present,
-        absentCount: absent,
-        date: data.date || new Date().toISOString().split('T')[0]
-      };
+      return mockOr(err, () => {
+        const present = data.attendanceList ? data.attendanceList.filter(s => s.present).length : 54;
+        const absent = data.attendanceList ? data.attendanceList.filter(s => !s.present).length : 6;
+        return {
+          status: 'SUCCESS',
+          recordedCount: data.attendanceList ? data.attendanceList.length : 60,
+          presentCount: present,
+          absentCount: absent,
+          date: data.date || new Date().toISOString().split('T')[0]
+        };
+      });
     }
   },
 
@@ -60,11 +63,11 @@ export const facultyService = {
       const response = await api.post('/faculty/marks', data);
       return response.data;
     } catch (err) {
-      return {
+      return mockOr(err, () => ({
         status: 'SUCCESS',
         updatedCount: data.marksList ? data.marksList.length : 60,
         message: 'Internal marks submitted and persisted successfully.'
-      };
+      }));
     }
   }
 };

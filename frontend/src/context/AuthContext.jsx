@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import api from '../services/api';
+import { errorMessage } from '../services/mock';
 
 const AuthContext = createContext(null);
 
@@ -22,7 +23,10 @@ export const AuthProvider = ({ children }) => {
       setUser(userData);
       return { success: true, user: userData };
     } catch (err) {
-      const message = err.response?.data?.message || 'Invalid username or password';
+      const status = err.response?.status;
+      const message = (status === 401 || status === 403)
+        ? 'Invalid username or password'
+        : errorMessage(err, 'Login failed. Please try again.');
       return { success: false, error: message };
     } finally {
       setLoading(false);

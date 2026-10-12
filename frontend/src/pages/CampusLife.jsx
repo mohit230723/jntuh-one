@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, MapPin, ArrowRight } from 'lucide-react';
 import { noticeService } from '../services/noticeService';
+import { errorMessage } from '../services/mock';
+import ErrorState from '../components/ErrorState';
 
 export default function CampusLife() {
   const [events, setEvents] = useState([]);
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    noticeService.getEvents().then((data) => {
-      setEvents(Array.isArray(data) ? data : []);
-    });
+    noticeService.getEvents()
+      .then((data) => setEvents(Array.isArray(data) ? data : []))
+      .catch((err) => setError(`Could not load events. ${errorMessage(err)}`));
   }, []);
 
   const pillars = [
@@ -49,6 +52,8 @@ export default function CampusLife() {
               <h2 className="heading-sm">Upcoming Campus Events & Symposiums</h2>
             </div>
           </div>
+
+          {error && <ErrorState message={error} />}
 
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
             {events.map((ev) => (
