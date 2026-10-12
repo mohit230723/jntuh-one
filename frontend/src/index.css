@@ -348,3 +348,31 @@ input, select, textarea {
   }
 }
 
+/* Error state shown when an API call fails */
+.error-state {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--spacing-16);
+  padding: var(--spacing-16) var(--spacing-24);
+  margin: var(--spacing-16) 0;
+  border: 1px solid var(--color-danger);
+  border-radius: var(--radius-universal);
+  background: var(--color-paper);
+  color: var(--color-slate-900);
+}
+
+.error-state p {
+  flex: 1;
+  min-width: 200px;
+}
+
+.error-state-retry {
+  padding: var(--spacing-8) var(--spacing-16);
+  border: 1px solid var(--color-cloud);
+  border-radius: var(--radius-universal);
+  background: var(--color-paper);
+  font: inherit;
+  cursor: pointer;
+}
+

@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import { BookOpen, Users, CheckCircle, Clock, Save, ArrowRight, Award, CheckCircle2, AlertCircle } from 'lucide-react';
 import { facultyService } from '../../services/facultyService';
+import { errorMessage } from '../../services/mock';
+import ErrorState from '../../components/ErrorState';
 
 export default function FacultyDashboard() {
   const { user } = useAuth();
@@ -24,6 +26,7 @@ export default function FacultyDashboard() {
   const [marksData, setMarksData] = useState({}); // rollNumber -> score
   const [submittingMarks, setSubmittingMarks] = useState(false);
   const [marksSuccessMsg, setMarksSuccessMsg] = useState(null);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     async function loadClasses() {
@@ -34,7 +37,7 @@ export default function FacultyDashboard() {
           setSelectedSubject(cls[0].courseCode);
         }
       } catch (err) {
-        console.error('Error fetching classes', err);
+        setError(`Could not load your classes. ${errorMessage(err)}`);
       }
     }
     loadClasses();
@@ -57,7 +60,8 @@ export default function FacultyDashboard() {
         setAttStatus(initAtt);
         setMarksData(initMarks);
       } catch (err) {
-        console.error('Error loading enrolled students', err);
+        setStudents([]);
+        setError(`Could not load the student list. ${errorMessage(err)}`);
       }
     }
     loadStudents();
@@ -79,6 +83,7 @@ export default function FacultyDashboard() {
     e.preventDefault();
     setSubmittingAtt(true);
     setAttSuccessMsg(null);
+    setError('');
     try {
       const payload = {
         subjectCode: selectedSubject,
@@ -94,7 +99,7 @@ export default function FacultyDashboard() {
       setAttSuccessMsg(`Attendance saved: ${res.presentCount} Present, ${res.absentCount} Absent out of ${res.recordedCount} scholars.`);
       setTimeout(() => setAttSuccessMsg(null), 5000);
     } catch (err) {
-      console.error('Failed to submit attendance', err);
+      setError(`Attendance was NOT saved. ${errorMessage(err)}`);
     } finally {
       setSubmittingAtt(false);
     }
@@ -104,6 +109,7 @@ export default function FacultyDashboard() {
     e.preventDefault();
     setSubmittingMarks(true);
     setMarksSuccessMsg(null);
+    setError('');
     try {
       const payload = {
         subjectCode: selectedSubject,
@@ -118,7 +124,7 @@ export default function FacultyDashboard() {
       setMarksSuccessMsg(`Successfully recorded ${examType} marks for ${res.updatedCount || students.length} scholars.`);
       setTimeout(() => setMarksSuccessMsg(null), 5000);
     } catch (err) {
-      console.error('Failed to submit marks', err);
+      setError(`Marks were NOT saved. ${errorMessage(err)}`);
     } finally {
       setSubmittingMarks(false);
     }
@@ -134,9 +140,9 @@ export default function FacultyDashboard() {
         <div className="eyebrow-pill" style={{ marginBottom: '8px' }}>FACULTY INSTRUCTION DESK</div>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '16px' }}>
           <div>
-            <h1 className="heading-lg" style={{ fontSize: '32px' }}>Welcome, {user?.name || 'Mr. P. Vijay Kumar'}</h1>
+            <h1 className="heading-lg" style={{ fontSize: '32px' }}>Welcome, {user?.name || user?.username}</h1>
             <div style={{ fontSize: '13px', color: 'var(--color-slate-600)', marginTop: '4px' }}>
-              Faculty ID: <strong>{user?.username || 'FAC-CSE-102'}</strong> • Department of Computer Science & Engineering
+              Faculty ID: <strong>{user?.username}</strong> • Department of Computer Science & Engineering
             </div>
           </div>
           <div style={{ display: 'flex', gap: '8px' }}>
@@ -145,6 +151,8 @@ export default function FacultyDashboard() {
           </div>
         </div>
       </div>
+
+      {error && <ErrorState message={error} />}
 
       {/* Assigned Classes Grid */}
       <div style={{ marginBottom: '32px' }}>
@@ -176,7 +184,7 @@ export default function FacultyDashboard() {
                   {cls.courseName}
                 </h3>
                 <div style={{ fontSize: '13px', color: 'var(--color-slate-600)', marginTop: '8px' }}>
-                  • Enrolled: <strong>{cls.totalStudents || 60} Scholars</strong>
+                  • Enrolled: <strong>{cls.totalStudents ?? '—'} Scholars</strong>
                 </div>
               </div>
             );

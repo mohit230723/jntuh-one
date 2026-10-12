@@ -1,4 +1,5 @@
 import api from './api';
+import { mockOr } from './mock';
 
 const MOCK_NOTICES = [
   {
@@ -63,21 +64,22 @@ export const noticeService = {
       const response = await api.get('/public/notices', { params });
       return response.data;
     } catch (err) {
-      console.warn('Backend unavailable, using local notices store:', err.message);
-      let filtered = [...MOCK_NOTICES];
-      if (params.category && params.category !== 'ALL') {
-        filtered = filtered.filter(n => n.category.toUpperCase() === params.category.toUpperCase());
-      }
-      if (params.search) {
-        const q = params.search.toLowerCase();
-        filtered = filtered.filter(n => n.title.toLowerCase().includes(q) || n.description.toLowerCase().includes(q));
-      }
-      return {
-        content: filtered,
-        totalElements: filtered.length,
-        totalPages: 1,
-        currentPage: 0
-      };
+      return mockOr(err, () => {
+        let filtered = [...MOCK_NOTICES];
+        if (params.category && params.category !== 'ALL') {
+          filtered = filtered.filter(n => n.category.toUpperCase() === params.category.toUpperCase());
+        }
+        if (params.search) {
+          const q = params.search.toLowerCase();
+          filtered = filtered.filter(n => n.title.toLowerCase().includes(q) || n.description.toLowerCase().includes(q));
+        }
+        return {
+          content: filtered,
+          totalElements: filtered.length,
+          totalPages: 1,
+          currentPage: 0
+        };
+      });
     }
   },
 
@@ -86,7 +88,7 @@ export const noticeService = {
       const response = await api.get('/public/notices/latest');
       return response.data;
     } catch (err) {
-      return MOCK_NOTICES.slice(0, 5);
+      return mockOr(err, () => MOCK_NOTICES.slice(0, 5));
     }
   },
 
@@ -95,7 +97,7 @@ export const noticeService = {
       const response = await api.get('/public/events');
       return response.data;
     } catch (err) {
-      return MOCK_NOTICES.filter(n => n.category === 'EVENTS');
+      return mockOr(err, () => MOCK_NOTICES.filter(n => n.category === 'EVENTS'));
     }
   },
 
@@ -104,14 +106,16 @@ export const noticeService = {
       const response = await api.post('/admin/notices', data);
       return response.data;
     } catch (err) {
-      const newNotice = {
-        id: Date.now(),
-        ...data,
-        postedDate: new Date().toISOString().split('T')[0],
-        author: data.author || 'Administration'
-      };
-      MOCK_NOTICES.unshift(newNotice);
-      return newNotice;
+      return mockOr(err, () => {
+        const newNotice = {
+          id: Date.now(),
+          ...data,
+          postedDate: new Date().toISOString().split('T')[0],
+          author: data.author || 'Administration'
+        };
+        MOCK_NOTICES.unshift(newNotice);
+        return newNotice;
+      });
     }
   },
 
@@ -120,12 +124,14 @@ export const noticeService = {
       const response = await api.put(`/admin/notices/${id}`, data);
       return response.data;
     } catch (err) {
-      const idx = MOCK_NOTICES.findIndex(n => n.id === id);
-      if (idx !== -1) {
-        MOCK_NOTICES[idx] = { ...MOCK_NOTICES[idx], ...data };
-        return MOCK_NOTICES[idx];
-      }
-      return data;
+      return mockOr(err, () => {
+        const idx = MOCK_NOTICES.findIndex(n => n.id === id);
+        if (idx !== -1) {
+          MOCK_NOTICES[idx] = { ...MOCK_NOTICES[idx], ...data };
+          return MOCK_NOTICES[idx];
+        }
+        return data;
+      });
     }
   },
 
@@ -134,11 +140,13 @@ export const noticeService = {
       const response = await api.delete(`/admin/notices/${id}`);
       return response.data;
     } catch (err) {
-      const idx = MOCK_NOTICES.findIndex(n => n.id === id);
-      if (idx !== -1) {
-        MOCK_NOTICES.splice(idx, 1);
-      }
-      return { status: 'SUCCESS' };
+      return mockOr(err, () => {
+        const idx = MOCK_NOTICES.findIndex(n => n.id === id);
+        if (idx !== -1) {
+          MOCK_NOTICES.splice(idx, 1);
+        }
+        return { status: 'SUCCESS' };
+      });
     }
   }
 };

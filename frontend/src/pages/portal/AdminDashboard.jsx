@@ -16,6 +16,8 @@ import {
 } from 'lucide-react';
 import { adminService } from '../../services/adminService';
 import { noticeService } from '../../services/noticeService';
+import { errorMessage } from '../../services/mock';
+import ErrorState from '../../components/ErrorState';
 
 export default function AdminDashboard() {
   const { user } = useAuth();
@@ -23,6 +25,7 @@ export default function AdminDashboard() {
   const [stats, setStats] = useState(null);
   const [notices, setNotices] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   // New Notice form
   const [newNoticeTitle, setNewNoticeTitle] = useState('');
@@ -54,7 +57,7 @@ export default function AdminDashboard() {
         setStats(statsData);
         setNotices(noticesData.content || noticesData || []);
       } catch (err) {
-        console.error('Error loading admin data', err);
+        setError(`Could not load dashboard data. ${errorMessage(err)}`);
       } finally {
         setLoading(false);
       }
@@ -67,6 +70,7 @@ export default function AdminDashboard() {
     if (!newNoticeTitle.trim()) return;
     setNoticeSubmitting(true);
     setNoticeSuccess(null);
+    setError('');
     try {
       const created = await noticeService.createNotice({
         title: newNoticeTitle,
@@ -82,7 +86,7 @@ export default function AdminDashboard() {
       setNoticeSuccess('Notice broadcasted and published to live website and student portal.');
       setTimeout(() => setNoticeSuccess(null), 4000);
     } catch (err) {
-      console.error('Failed to create notice', err);
+      setError(`Notice was NOT published. ${errorMessage(err)}`);
     } finally {
       setNoticeSubmitting(false);
     }
@@ -94,7 +98,7 @@ export default function AdminDashboard() {
       await noticeService.deleteNotice(id);
       setNotices(notices.filter((n) => n.id !== id));
     } catch (err) {
-      console.error('Failed to delete notice', err);
+      setError(`Notice was NOT archived. ${errorMessage(err)}`);
     }
   };
 
@@ -105,7 +109,7 @@ export default function AdminDashboard() {
       });
       setNotices(notices.map((n) => (n.id === notice.id ? { ...n, pinned: !n.pinned } : n)));
     } catch (err) {
-      console.error('Failed to update notice', err);
+      setError(`Notice was NOT updated. ${errorMessage(err)}`);
     }
   };
 
@@ -129,7 +133,7 @@ export default function AdminDashboard() {
       setNewEmail('');
       setTimeout(() => setUserSuccess(null), 5000);
     } catch (err) {
-      setUserError(err.response?.data?.error || 'Failed to provision user.');
+      setUserError(errorMessage(err, 'Failed to provision user.'));
     } finally {
       setUserSubmitting(false);
     }
@@ -144,7 +148,7 @@ export default function AdminDashboard() {
           <div>
             <h1 className="heading-lg" style={{ fontSize: '32px' }}>System Command Console</h1>
             <div style={{ fontSize: '13px', color: 'var(--color-slate-600)', marginTop: '4px' }}>
-              Authenticated Administrator: <strong>{user?.name || 'Dr. S. K. Sharma (Registrar)'}</strong> • Autonomous Campus Operations
+              Authenticated Administrator: <strong>{user?.name || user?.username}</strong> • Autonomous Campus Operations
             </div>
           </div>
           <div style={{ display: 'flex', gap: '8px' }}>
@@ -153,6 +157,8 @@ export default function AdminDashboard() {
           </div>
         </div>
       </div>
+
+      {error && <ErrorState message={error} />}
 
       {/* Mode Sub-Tabs */}
       <div style={{
@@ -231,7 +237,7 @@ export default function AdminDashboard() {
             Enrolled Scholars
           </div>
           <div className="stat-number" style={{ fontSize: '36px', marginTop: '8px' }}>
-            {stats?.totalStudents || 60}
+            {stats?.totalStudents ?? '—'}
           </div>
           <div style={{ fontSize: '12px', color: 'var(--color-iron)', marginTop: '4px' }}>
             Batch 2023–2027 CSE Cohort
@@ -243,7 +249,7 @@ export default function AdminDashboard() {
             Teaching Faculty
           </div>
           <div className="stat-number" style={{ fontSize: '36px', marginTop: '8px' }}>
-            {stats?.totalFaculty || 12}
+            {stats?.totalFaculty ?? '—'}
           </div>
           <div style={{ fontSize: '12px', color: 'var(--color-iron)', marginTop: '4px' }}>
             Doctoral Roster
@@ -267,7 +273,7 @@ export default function AdminDashboard() {
             Academic Divisions
           </div>
           <div className="stat-number" style={{ fontSize: '36px', marginTop: '8px' }}>
-            {stats?.departmentsCount || 12}
+            {stats?.departmentsCount ?? '—'}
           </div>
           <div style={{ fontSize: '12px', color: 'var(--color-iron)', marginTop: '4px' }}>
             Departments
@@ -279,7 +285,7 @@ export default function AdminDashboard() {
             Fee Collections
           </div>
           <div className="stat-number" style={{ fontSize: '36px', marginTop: '8px' }}>
-            ₹{stats?.totalFeeCollected ? (stats.totalFeeCollected / 100000).toFixed(1) + 'L' : '19.8L'}
+            {stats?.totalFeeCollected != null ? '₹' + (stats.totalFeeCollected / 100000).toFixed(1) + 'L' : '—'}
           </div>
           <div style={{ fontSize: '12px', color: 'var(--color-success)', marginTop: '4px', fontWeight: 600 }}>
             94.3% Clearance Rate

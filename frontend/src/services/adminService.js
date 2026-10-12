@@ -1,4 +1,5 @@
 import api from './api';
+import { mockOr } from './mock';
 
 const MOCK_STATS = {
   totalStudents: 60,
@@ -14,7 +15,7 @@ export const adminService = {
       const response = await api.get('/admin/stats');
       return response.data;
     } catch (err) {
-      return MOCK_STATS;
+      return mockOr(err, MOCK_STATS);
     }
   },
 
@@ -23,13 +24,13 @@ export const adminService = {
       const response = await api.post('/admin/users', data);
       return response.data;
     } catch (err) {
-      return {
+      return mockOr(err, () => ({
         status: 'SUCCESS',
         id: Date.now(),
         username: data.username,
         role: data.role,
         message: 'User provisioned in simulation database.'
-      };
+      }));
     }
   }
 };

@@ -12,10 +12,13 @@ import {
   ExternalLink
 } from 'lucide-react';
 import { noticeService } from '../services/noticeService';
+import { errorMessage } from '../services/mock';
+import ErrorState from '../components/ErrorState';
 
 export default function Home() {
   const [notices, setNotices] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     async function load() {
@@ -24,7 +27,7 @@ export default function Home() {
         const data = await noticeService.getLatestNotices();
         setNotices(Array.isArray(data) ? data : (data.content || []));
       } catch (err) {
-        console.error('Failed to load notices', err);
+        setError(`Could not load the latest notices. ${errorMessage(err)}`);
       } finally {
         setLoading(false);
       }
@@ -225,6 +228,12 @@ export default function Home() {
               All Notices Archive →
             </Link>
           </div>
+
+          {error && <ErrorState message={error} />}
+          {loading && <p className="body-standard">Loading notices…</p>}
+          {!loading && !error && notices.length === 0 && (
+            <p className="body-standard">No notices have been published yet.</p>
+          )}
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {notices.map((notice) => (
