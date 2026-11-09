@@ -1,7 +1,5 @@
 package edu.jntuh.ucest.dto;
 
-import edu.jntuh.ucest.model.Notice;
-
 import java.time.LocalDate;
 
 public class NoticeDto {
@@ -23,19 +21,6 @@ public class NoticeDto {
         this.postedDate = postedDate;
         this.pinned = pinned;
         this.author = author;
-    }
-
-    /** Copies only public fields, so the createdBy User (and its password hash) never reaches JSON. */
-    public static NoticeDto from(Notice notice) {
-        return new NoticeDto(
-                notice.getId(),
-                notice.getTitle(),
-                notice.getCategory(),
-                notice.getDescription(),
-                notice.getPostedDate(),
-                notice.isPinned(),
-                notice.getAuthorName()
-        );
     }
 
     public Long getId() { return id; }

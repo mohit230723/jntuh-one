@@ -1,6 +1,5 @@
 package edu.jntuh.ucest.controller;
 
-import edu.jntuh.ucest.dto.NoticeDto;
 import edu.jntuh.ucest.model.Notice;
 import edu.jntuh.ucest.repository.NoticeRepository;
 import org.springframework.data.domain.Page;
@@ -22,7 +21,7 @@ public class PublicNoticeController {
     }
 
     @GetMapping("/notices")
-    public ResponseEntity<Page<NoticeDto>> getNotices(
+    public ResponseEntity<Page<Notice>> getNotices(
             @RequestParam(required = false) String category,
             @RequestParam(required = false) String search,
             @RequestParam(defaultValue = "0") int page,
@@ -33,26 +32,25 @@ public class PublicNoticeController {
         String searchFilter = (search != null && !search.trim().isEmpty()) ? search.trim() : null;
 
         Page<Notice> result = noticeRepository.searchNotices(categoryFilter, searchFilter, pageable);
-        return ResponseEntity.ok(result.map(NoticeDto::from));
+        return ResponseEntity.ok(result);
     }
 
     @GetMapping("/notices/{id}")
-    public ResponseEntity<NoticeDto> getNoticeById(@PathVariable Long id) {
+    public ResponseEntity<Notice> getNoticeById(@PathVariable Long id) {
         return noticeRepository.findById(id)
-                .map(notice -> ResponseEntity.ok(NoticeDto.from(notice)))
+                .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
     }
 
     @GetMapping("/notices/latest")
-    public ResponseEntity<List<NoticeDto>> getLatestNotices() {
-        return ResponseEntity.ok(noticeRepository.findTop5ByArchivedFalseOrderByPinnedDescPostedDateDesc()
-                .stream().map(NoticeDto::from).toList());
+    public ResponseEntity<List<Notice>> getLatestNotices() {
+        return ResponseEntity.ok(noticeRepository.findTop5ByArchivedFalseOrderByPinnedDescPostedDateDesc());
     }
 
     @GetMapping("/events")
-    public ResponseEntity<List<NoticeDto>> getEvents() {
+    public ResponseEntity<List<Notice>> getEvents() {
         Pageable pageable = PageRequest.of(0, 10);
         Page<Notice> eventsPage = noticeRepository.findByArchivedFalseAndCategoryOrderByPinnedDescPostedDateDesc("EVENTS", pageable);
-        return ResponseEntity.ok(eventsPage.getContent().stream().map(NoticeDto::from).toList());
+        return ResponseEntity.ok(eventsPage.getContent());
     }
 }
